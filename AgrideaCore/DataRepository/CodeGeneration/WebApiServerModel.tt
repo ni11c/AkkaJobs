@@ -1,0 +1,160 @@
+﻿<#
+/////////////////////////////////////////////////////////////////////////////////
+//                                                                             //
+// Copyright (c) 2010-2011 Agridea, Inc. All Rights Reserved                   //
+//                                                                             //
+/////////////////////////////////////////////////////////////////////////////////
+#>
+<#@ include file="WebApiServerModelTools.tt"#>
+<#@ assembly name="$(ProjectDir)$(OutDir)AgrideaCore.dll" #>
+<#@ import namespace="Agridea.DataRepository" #>
+
+<#+
+string GenerateCode(string inputFile)
+{   
+    CodeGenerationParameters.Code = new CodeGenerationTools(this);
+    CodeGenerationParameters.Region = new CodeRegion(this, 1);
+    CodeGenerationParameters.EF = new MetadataTools(this);
+    EntityFrameworkTemplateFileManager fileManager = EntityFrameworkTemplateFileManager.Create(this);
+    string nameSpace = string.Format("{0}", Parameters.NameSpace);
+
+    bool converged = true;
+    IList<EntityType> allButIgnored                              = Parameters.Current.AllButIgnored();
+    IList<EntityType> orderedEntities                            = Parameters.Order.GetPartialDependencyOrder(allButIgnored, out converged);
+
+    WriteHeader(fileManager, Parameters.ExtraUsings.ToArray());
+
+
+
+/////////////////////
+//Emit Enum Types
+/////////////////////
+foreach( EnumType enumType in Parameters.Current.AllEnumTypes()) 
+{
+	fileManager.StartNewFile(enumType.Name + ".cs");
+	BeginNamespace(nameSpace, CodeGenerationParameters.Code);
+#>
+public enum <#=enumType.Name#> 
+{
+<#+
+	foreach(var member in CodeGenerationHelper.GetEnumMembers(enumType)) {
+	#>
+	    <#=CodeGenerationHelper.GetEnumMemberName(member)#> = <#=CodeGenerationHelper.GetEnumMemberValue(member)#>,
+<#+
+	}
+#>
+}
+<#+
+	EndNamespace(nameSpace);
+}
+
+foreach (EntityType entity in Parameters.Current.AllButIgnored())
+{
+    fileManager.StartNewFile(entity.Name + ".cs");
+    BeginNamespace(nameSpace, CodeGenerationParameters.Code);
+#>
+<#=Accessibility.ForType(entity)#> <#=CodeGenerationParameters.Code.SpaceAfter(CodeGenerationParameters.Code.AbstractOption(entity))#>partial class <#=CodeGenerationParameters.Code.Escape(entity)#>
+{
+<#+
+    GeneratePrimitiveProperties(CodeGenerationParameters.Region, CodeGenerationParameters.Code, entity);
+    GenerateNavigationProperties(CodeGenerationParameters.Region, CodeGenerationParameters.Code, CodeGenerationParameters.EF, entity);
+#>
+}
+<#+
+    EndNamespace(nameSpace);
+
+    fileManager.StartNewFile(entity.Name + "Reference.cs");
+    BeginNamespace(nameSpace, CodeGenerationParameters.Code);
+#>
+<#=Accessibility.ForType(entity)#> <#=CodeGenerationParameters.Code.SpaceAfter(CodeGenerationParameters.Code.AbstractOption(entity))#>partial class <#=entity.Name + "Reference"#>
+{
+    public int Id {get;set;}
+}
+<#+
+    EndNamespace(nameSpace);
+
+}	
+    fileManager.Process();
+return "generation done";
+}
+#>
+
+<#+
+private void GeneratePrimitiveProperties(CodeRegion region, CodeGenerationTools code, EntityType entity)
+{
+    region.Begin("Primitive Properties");
+    #>    public int Id { get; set; }
+<#+
+    foreach (EdmProperty edmProperty in CodeGenerationHelper.PrimitiveProperties(entity))
+    {
+        GenerateXmlComment(edmProperty, entity);
+#>
+    <#=Accessibility.ForProperty(edmProperty)#> <#=code.Escape(edmProperty.TypeUsage)#> <#=code.Escape(edmProperty)#> { get; set;}
+<#+
+    }
+    region.End();
+}
+private void GenerateNavigationProperties(CodeRegion region, CodeGenerationTools code, MetadataTools ef, EntityType entity)
+{
+    region.Begin("Navigation Properties");
+    if(CodeGenerationHelper.NavigationProperties(entity).ToList().Count == 0)
+    {
+    #>    //None(no navigation property)<#+
+    }
+    foreach (NavigationProperty property in CodeGenerationHelper.ToSingleProperties(entity))
+    {
+        GenerateXmlComment(property, entity);
+        GenerateSingleNavigationProperty(region, code, ef, property);
+    }
+    NewLine();
+    foreach (NavigationProperty property in CodeGenerationHelper.ToManyProperties(entity))
+    {
+		if (!CodeGenerationHelper.IgnoreButInterAssembly(property.ToEndMember.GetEntityType())) {
+			GenerateXmlComment(property, entity);
+			GenerateManyNavigationProperty(region, code, ef, property);
+		}
+    }
+    region.End();
+}
+
+private void GenerateXmlComment(EdmMember edmMember, EntityType entity)
+{
+        if(CodeGenerationHelper.IsDiscriminant(edmMember, entity))
+        {
+#>
+    /// <remarks>
+    /// Clef naturelle
+    /// </remarks>
+<#+
+        }
+}
+
+private void GenerateSingleNavigationProperty(CodeRegion region, CodeGenerationTools code, MetadataTools ef, NavigationProperty property)
+{
+    string entityType = code.Escape(property.FromEndMember.GetEntityType());
+    string propertyType = code.Escape(property.ToEndMember.GetEntityType());
+    NavigationProperty inverse = ef.Inverse(property);
+#>
+    public int <#=code.Escape(property)#>Id  { get; set;}    
+<#+
+
+}
+
+private void GenerateManyNavigationProperty(CodeRegion region, CodeGenerationTools code, MetadataTools ef, NavigationProperty property)
+{
+    string entityType = code.Escape(property.FromEndMember.GetEntityType());
+    string propertyType = code.Escape(property.ToEndMember.GetEntityType());
+    string privateInstanceName= GetPrivateInstanceName(code, property);
+    string collectionName= code.Escape(property);
+#>
+    public IList<<#=propertyType+"Reference"#>> <#=collectionName #> { get; set;}   
+<#+
+    
+}
+
+private string GetPrivateInstanceName(CodeGenerationTools code, EdmMember property)
+{
+    return code.CamelCase(code.Escape(property)) + CodeGenerationConstants.Underscore;
+}
+#>
+

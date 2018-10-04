@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AFF2BD13-6387-4A9B-B05E-8AB6F9E736A9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Agridea.Prototypes.Akka.Common</RootNamespace>
+    <AssemblyName>Agridea.Prototypes.Akka.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Akka, Version=1.0.7.18, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Akka.1.0.7\lib\net45\Akka.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Akka.Logger.log4net, Version=1.0.6.16, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Akka.Logger.log4net.1.0.6\lib\net45\Akka.Logger.log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.1.36.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.1.36\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Serialization" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActorPaths.cs" />
+    <Compile Include="Jobs\AgisJobFactory.cs" />
+    <Compile Include="Models\AgisExtensions.cs" />
+    <Compile Include="Models\AgisSchema\ecoEthoRegistration-2-02.designer.cs" />
+    <Compile Include="Models\AgisSchema\ecoEthoRegistration.cs" />
+    <Compile Include="Models\AgisSchema\ILocalData.cs" />
+    <Compile Include="Models\AgisSchema\payment-2-2.Designer.cs" />
+    <Compile Include="Models\AgisSchema\payment.cs" />
+    <Compile Include="Models\AgisSchema\register-1-96.cs" />
+    <Compile Include="Models\AgisSchema\structure-2-20.Designer.cs" />
+    <Compile Include="Models\AgisSchema\structure.cs" />
+    <Compile Include="Models\StructureExporter.cs" />
+    <Compile Include="Jobs\AgisJob.cs" />
+    <Compile Include="Jobs\DoNothingJobFactory.cs" />
+    <Compile Include="Jobs\DoNothingJob.cs" />
+    <Compile Include="Jobs\IJobsDisplayer.cs" />
+    <Compile Include="Jobs\JobStatus.cs" />
+    <Compile Include="Jobs\IJobFactory.cs" />
+    <Compile Include="Jobs\IJob.cs" />
+    <Compile Include="Messages\Result.cs" />
+    <Compile Include="Messages\GetResult.cs" />
+    <Compile Include="Messages\Resume.cs" />
+    <Compile Include="Messages\Run.cs" />
+    <Compile Include="Messages\Pause.cs" />
+    <Compile Include="Messages\Cancel.cs" />
+    <Compile Include="Messages\Finished.cs" />
+    <Compile Include="Messages\Progress.cs" />
+    <Compile Include="Messages\RegistrationOutcome.cs" />
+    <Compile Include="Messages\StatusChanged.cs" />
+    <Compile Include="Models\StructureModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Actors\JobActor.cs" />
+    <Compile Include="Actors\SipaAcotorV2.cs" />
+    <Compile Include="Actors\SipaActor.cs" />
+    <Compile Include="Messages\Started.cs" />
+    <Compile Include="Actors\SupervisorActorV2.cs" />
+    <Compile Include="Actors\SupervisorActor.cs" />
+    <Compile Include="Providers\FileSystemStorageProvider.cs" />
+    <Compile Include="Providers\IDataProvider.cs" />
+    <Compile Include="Providers\InMemoryStorageProvider.cs" />
+    <Compile Include="Providers\IStorageProvider.cs" />
+    <Compile Include="Providers\WebApiDataProvider.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Agridea.Sedex\Agridea.Sedex.csproj">
+      <Project>{FFD70FB6-B388-469D-A063-688E52C23207}</Project>
+      <Name>Agridea.Sedex</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{4D885535-6545-45D6-A9C7-A299DB3EE5B1}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

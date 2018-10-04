@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AgrideaCore.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="AgrideaCoreTargetContainer"></EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Agridea.Metadata" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AgrideaCoreContainer" annotation:LazyLoadingEnabled="true" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+          <EntitySet Name="MetadataEntities" EntityType="Agridea.Metadata.MetadataEntity" />
+          <EntitySet Name="MetadataFields" EntityType="Agridea.Metadata.MetadataField" />
+          <EntitySet Name="MetadataNavigationProperties" EntityType="Agridea.Metadata.MetadataNavigationProperty" />
+          <AssociationSet Name="MetadataEntityMetadataField" Association="Agridea.Metadata.MetadataEntityMetadataField">
+            <End Role="MetadataEntity" EntitySet="MetadataEntities" />
+            <End Role="MetadataField" EntitySet="MetadataFields" />
+          </AssociationSet>
+          <AssociationSet Name="MetadataEntityMetadataNavigationProperty" Association="Agridea.Metadata.MetadataEntityMetadataNavigationProperty">
+            <End Role="MetadataEntity" EntitySet="MetadataEntities" />
+            <End Role="MetadataNavigationProperty" EntitySet="MetadataNavigationProperties" />
+          </AssociationSet>
+          <AssociationSet Name="MetadataEntityMetadataEntity" Association="Agridea.Metadata.MetadataUsage">
+            <End Role="UsingEntity" EntitySet="MetadataEntities" />
+            <End Role="UsedEntity" EntitySet="MetadataEntities" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="MetadataEntity">
+          <Documentation>
+            <Summary>BE885A9D-4BCB-40F0-B9CD-CDD00E847EFC</Summary>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+            <Documentation>
+              <Summary>c3124082-bf9a-4325-93df-7e6fb43cee45</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="Guid" Type="String" Nullable="false">
+            <Documentation>
+              <Summary>e228cdb7-19a3-49ae-a3ec-1bd4730c3b9c</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="Dimension" Type="Boolean" Nullable="false">
+            <Documentation>
+              <Summary>92a06d16-ae46-4559-9b9a-4e3eda0cf99d</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="Name" Type="String" Nullable="false">
+            <Documentation>
+              <Summary>4012d58b-1047-49a4-8107-e649461e64b6</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="Documentation" Type="String" Nullable="false">
+            <Documentation>
+              <Summary>e1dac6a9-773b-4bf0-9e78-b6f79cd09553</Summary>
+            </Documentation>
+          </Property>
+          <NavigationProperty Name="MetadataFieldList" Relationship="Agridea.Metadata.MetadataEntityMetadataField" FromRole="MetadataEntity" ToRole="MetadataField">
+            <Documentation>
+              <Summary>07c2a20c-4945-4cc3-b52f-6fafe99b1083</Summary>
+            </Documentation>
+          </NavigationProperty>
+          <NavigationProperty Name="MetadataNavigationPropertyList" Relationship="Agridea.Metadata.MetadataEntityMetadataNavigationProperty" FromRole="MetadataEntity" ToRole="MetadataNavigationProperty">
+            <Documentation>
+              <Summary>8f7f911e-0841-4165-8930-239df7d81504</Summary>
+            </Documentation>
+          </NavigationProperty>
+          <NavigationProperty Name="UsedEntityList" Relationship="Agridea.Metadata.MetadataUsage" FromRole="UsingEntity" ToRole="UsedEntity">
+            <Documentation>
+              <Summary>2e999fb4-8b9f-4c87-871b-6ad7a1cc255b</Summary>
+            </Documentation>
+          </NavigationProperty>
+          <NavigationProperty Name="UsingEntityList" Relationship="Agridea.Metadata.MetadataUsage" FromRole="UsedEntity" ToRole="UsingEntity">
+            <Documentation>
+              <Summary>b5508404-99bd-402d-beaa-c2a64a99306a</Summary>
+            </Documentation>
+          </NavigationProperty>
+          <Property Name="Url" Type="String" Nullable="false">
+            <Documentation>
+              <Summary>3941b554-fbb4-4611-b679-779be113c101</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="FileName" Type="String" Nullable="false">
+            <Documentation>
+              <Summary>428eeadb-642d-4e79-811f-0ad7f9c4d949</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="FileContent" Type="Binary" Nullable="false">
+            <Documentation>
+              <Summary>9fa42292-5172-461e-8374-bcba3345b292</Summary>
+            </Documentation>
+          </Property>
+        </EntityType>
+        <EntityType Name="MetadataField">
+          <Documentation>
+            <Summary>0DA463DF-3EDE-4751-BA3B-AAC8DE43D0C5</Summary>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+            <Documentation>
+              <Summary>1b089f59-6ac5-46c4-86b6-9e7c10b3657e</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="Guid" Type="String" Nullable="false">
+            <Documentation>
+              <Summary>9cb09826-e135-4147-a138-942fc8b9e6f2</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="Name" Type="String" Nullable="false">
+            <Documentation>
+              <Summary>09445e33-a4cf-4bf1-942d-725933642ad0</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="Type" Type="String" Nullable="false">
+            <Documentation>
+              <Summary>bfec8376-c6f2-44cd-8fe2-67fb23502a46</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="Documentation" Type="String" Nullable="false">
+            <Documentation>
+              <Summary>cd2e4e02-ff4b-4fe7-a13b-8380e30e1d05</Summary>
+            </Documentation>
+          </Property>
+          <NavigationProperty Name="MetadataEntity" Relationship="Agridea.Metadata.MetadataEntityMetadataField" FromRole="MetadataField" ToRole="MetadataEntity">
+            <Documentation>
+              <Summary>e3f4192c-02d4-462e-9a5c-56241fca2b9a</Summary>
+            </Documentation>
+          </NavigationProperty>
+        </EntityType>
+        <EntityType Name="MetadataNavigationProperty">
+          <Documentation>
+            <Summary>5732AB87-C974-4C95-B984-64B4AB9F4730</Summary>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+            <Documentation>
+              <Summary>64cda702-a89b-4436-bfb1-de70e29f2666</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="Guid" Type="String" Nullable="false">
+            <Documentation>
+              <Summary>6a64d848-9903-4c03-9cad-bd4abac44ae5</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="Name" Type="String" Nullable="false">
+            <Documentation>
+              <Summary>56bd552b-8eac-4268-8f1c-f4e480f87a81</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="Type" Type="String" Nullable="false">
+            <Documentation>
+              <Summary>471a0375-f1e9-4d66-afce-f725b7e155fb</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="FromMultiplicity_" Type="Int32" Nullable="false">
+            <Documentation>
+              <Summary>eeb1799a-e22b-44e1-843a-f573555cd07e</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="ToMultiplicity_" Type="Int32" Nullable="false">
+            <Documentation>
+              <Summary>56bd728d-53d8-45af-b40f-57f658520f24</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="Documentation" Type="String" Nullable="false">
+            <Documentation>
+              <Summary>fc033011-185b-4e5f-ba2f-2a1c193f83ae</Summary>
+            </Documentation>
+          </Property>
+          <NavigationProperty Name="MetadataEntity" Relationship="Agridea.Metadata.MetadataEntityMetadataNavigationProperty" FromRole="MetadataNavigationProperty" ToRole="MetadataEntity">
+            <Documentation>
+              <Summary>c562682d-2649-4437-a26e-8c74d4f7e7c9</Summary>
+            </Documentation>
+          </NavigationProperty>
+        </EntityType>
+        <Association Name="MetadataEntityMetadataField">
+          <End Type="Agridea.Metadata.MetadataEntity" Role="MetadataEntity" Multiplicity="1" />
+          <End Type="Agridea.Metadata.MetadataField" Role="MetadataField" Multiplicity="*" />
+        </Association>
+        <Association Name="MetadataEntityMetadataNavigationProperty">
+          <End Type="Agridea.Metadata.MetadataEntity" Role="MetadataEntity" Multiplicity="1" />
+          <End Type="Agridea.Metadata.MetadataNavigationProperty" Role="MetadataNavigationProperty" Multiplicity="*" />
+        </Association>
+        <Association Name="MetadataUsage">
+          <End Type="Agridea.Metadata.MetadataEntity" Role="UsingEntity" Multiplicity="*" />
+          <End Type="Agridea.Metadata.MetadataEntity" Role="UsedEntity" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <Alias Key="Model" Value="AgrideaCore" />
+        <Alias Key="Target" Value="AgrideaCore.Store" />
+        <EntityContainerMapping CdmEntityContainer="AgrideaCoreContainer" StorageEntityContainer="AgrideaCoreTargetContainer"></EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer>
+    <edmx:Connection>
+      <DesignerInfoPropertySet xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+        <DesignerProperty Name="ValidateOnBuild" Value="False" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram Name="AgrideaCore" ZoomLevel="123" xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+        <EntityTypeShape EntityType="Agridea.Metadata.MetadataEntity" Width="2.125" PointX="3.75" PointY="0.5" />
+        <EntityTypeShape EntityType="Agridea.Metadata.MetadataField" Width="1.5" PointX="1" PointY="2.375" />
+        <EntityTypeShape EntityType="Agridea.Metadata.MetadataNavigationProperty" Width="2.25" PointX="7.5" PointY="2.25" />
+        <AssociationConnector Association="Agridea.Metadata.MetadataEntityMetadataField" />
+        <AssociationConnector Association="Agridea.Metadata.MetadataEntityMetadataNavigationProperty" />
+        <AssociationConnector Association="Agridea.Metadata.MetadataUsage" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

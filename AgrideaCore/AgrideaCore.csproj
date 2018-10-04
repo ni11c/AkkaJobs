@@ -1,0 +1,793 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A5A5FA30-82DD-462E-A784-A37999F7541D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Agridea</RootNamespace>
+    <AssemblyName>AgrideaCore</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseImportOracle|AnyCPU'">
+    <OutputPath>bin\ReleaseImportOracle\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\AgrideaCore.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugBbsUnitTests|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\DebugBbsUnitTests\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accessibility">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="AjaxMin, Version=5.14.5506.26196, Culture=neutral, PublicKeyToken=21ef50ce11b5d80f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AjaxMin.5.14.5506.26202\lib\net40\AjaxMin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentValidation, Version=6.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.6.2.1.0\lib\Net45\FluentValidation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.10.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.10\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp.xmlworker, Version=5.5.10.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itextsharp.xmlworker.5.5.10\lib\itextsharp.xmlworker.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Kent.Boogaart.HelperTrinity, Version=1.5.2.0, Culture=neutral, PublicKeyToken=cc96fa93a217f7a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kent.Boogaart.HelperTrinity.1.5.2\lib\net45\Kent.Boogaart.HelperTrinity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\..\..\..\..\NugetPackages\Unofficial.Microsoft.SQLServer.SMO.11.0.3000.0\lib\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\..\..\..\..\NugetPackages\Unofficial.Microsoft.SQLServer.SMO.11.0.3000.0\lib\Microsoft.SqlServer.Management.Sdk.Sfc.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Smo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\..\..\..\..\NugetPackages\Unofficial.Microsoft.SQLServer.SMO.11.0.3000.0\lib\Microsoft.SqlServer.Smo.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.SmoExtended, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\..\..\..\..\NugetPackages\Unofficial.Microsoft.SQLServer.SMO.11.0.3000.0\lib\Microsoft.SqlServer.SmoExtended.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.SqlEnum, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\..\..\..\..\NugetPackages\Unofficial.Microsoft.SQLServer.SMO.11.0.3000.0\lib\Microsoft.SqlServer.SqlEnum.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http">
+      <HintPath>..\packages\System.Net.Http.2.0.20126.16343\lib\net40\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+      <HintPath>..\packages\System.Net.Http.2.0.20126.16343\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Banking\IbanNumber.cs" />
+    <Compile Include="Calendar\DTOs\CalendarEventViewModel.cs" />
+    <Compile Include="Calendar\DTOs\SearchCalendarEvent.cs" />
+    <Compile Include="Calendar\Model\CalendaEventRecurrence.cs" />
+    <Compile Include="Calendar\Model\CalendarEventStatus.cs" />
+    <Compile Include="Calendar\Model\CalendarEvent.cs" />
+    <Compile Include="Calendar\Model\GeneratedCode\AgrideaService.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Calendar\Model\GeneratedCode\CalendarDomainModelContext.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Calendar\Model\GeneratedCode\CalendarEvent.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Calendar\Model\GeneratedCode\CalendarEventRecurrence.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Calendar\Model\GeneratedCode\CalendarEventStatus.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Calendar\Model\GeneratedCode\CallDomainModel.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Calendar\Model\GeneratedCode\DomainModelMetadata.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Calendar\Model\GeneratedCode\IAgrideaService.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Calendar\Model\GeneratedCode\CalendarDomainModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CalendarDomainModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\AgrideaConfiguration.cs" />
+    <Compile Include="Constants\FileContent.cs" />
+    <Compile Include="Constants\IFile.cs" />
+    <Compile Include="Constants\IHasId.cs" />
+    <Compile Include="DataRepository\CodeGeneration\ClassMappings.cs" />
+    <Compile Include="DataRepository\CodeGeneration\CodeGenerationConstants.cs" />
+    <Compile Include="DataRepository\CodeGeneration\CodeGenerationHelper.cs" />
+    <Compile Include="DataRepository\CodeGeneration\AssociationTypes.cs" />
+    <Compile Include="DataRepository\CodeGeneration\DbIndex.cs" />
+    <Compile Include="DataRepository\CodeGeneration\DbParameter.cs" />
+    <Compile Include="DataRepository\CodeGeneration\EntityMappings.cs" />
+    <Compile Include="DataRepository\CodeGeneration\Order.cs" />
+    <Compile Include="DataRepository\CodeGeneration\Entities.cs" />
+    <Compile Include="DataRepository\CodeGeneration\Parameters.cs" />
+    <Compile Include="DataRepository\CodeGeneration\InheritanceTypes.cs" />
+    <Compile Include="DataRepository\CustomProperties.cs" />
+    <Compile Include="DataRepository\CloningHelper.cs" />
+    <Compile Include="DataRepository\DependencyHelper.cs" />
+    <Compile Include="DataRepository\DimensionAttribute.cs" />
+    <Compile Include="DataRepository\ViewAttribute.cs" />
+    <Compile Include="DataRepository\ReferenceAttribute.cs" />
+    <Compile Include="DataRepository\MandatoryAttribute.cs" />
+    <Compile Include="DataRepository\Metadata\EdmxHelper.cs" />
+    <Compile Include="DataRepository\Metadata\Model\GeneratedCode\AgrideaService.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataRepository\Metadata\Model\GeneratedCode\CallDomainModel.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DataRepository\Metadata\Model\GeneratedCode\DomainModelMetadata.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataRepository\Metadata\Model\GeneratedCode\IAgrideaService.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataRepository\Metadata\Model\GeneratedCode\MetadataDomainModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MetadataDomainModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DataRepository\Metadata\Model\GeneratedCode\MetadataDomainModelContext.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataRepository\Metadata\Model\GeneratedCode\MetadataEntity.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataRepository\Metadata\Model\GeneratedCode\MetadataField.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataRepository\Metadata\Model\GeneratedCode\MetadataNavigationProperty.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataRepository\Metadata\Model\MetadataField.cs" />
+    <Compile Include="DataRepository\Metadata\Model\MetadataEntity.cs" />
+    <Compile Include="DataRepository\Metadata\Model\MetadataNavigationProperty.cs" />
+    <Compile Include="DataRepository\Metadata\Model\MultiplicityTypes.cs" />
+    <Compile Include="DataRepository\TransientAttribute.cs" />
+    <Compile Include="DataRepository\DiscriminantUnicityException.cs" />
+    <Compile Include="DataRepository\FixupCollection.cs" />
+    <Compile Include="DataRepository\DiscriminantAttribute.cs" />
+    <Compile Include="DataRepository\SqlServer\DatabaseInitializers\SqlServerDropCreateDatabaseAlways.cs" />
+    <Compile Include="DataRepository\SqlServer\DatabaseInitializers\SqlServerCreateDatabaseIfNotExists.cs" />
+    <Compile Include="Diagnostics\Logging\LogHelper.cs" />
+    <Compile Include="Diagnostics\Logging\ProgressIndicator.cs" />
+    <Compile Include="IRandomGenerator.cs" />
+    <Compile Include="News\Model\GeneratedCode\DomainModelMetadata.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="News\Model\GeneratedCode\NewsItem.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ObjectMapping\MapContext\StandardMapContextResolver.cs" />
+    <Compile Include="ObjectMapping\MapContext\IMapContextResolver.cs" />
+    <Compile Include="ObjectMapping\MapContext\MapContext.cs" />
+    <Compile Include="ObjectMapping\EasyMapper.cs" />
+    <Compile Include="ObjectMapping\ExpressionExtensions.cs" />
+    <Compile Include="ObjectMapping\Map.cs" />
+    <Compile Include="ObjectMapping\MapCollection.cs" />
+    <Compile Include="ObjectMapping\Mapper.cs" />
+    <Compile Include="ObjectMapping\Mapping.cs" />
+    <Compile Include="ObjectMapping\PropertyPath.cs" />
+    <Compile Include="ObjectMapping\ReflectionExtensions.cs" />
+    <Compile Include="ObjectMapping\TwoPropertyPath.cs" />
+    <Compile Include="RandomGenerator.cs" />
+    <Compile Include="Resources\AgrideaCoreStrings.Designer.cs">
+      <DependentUpon>AgrideaCoreStrings.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\EnumLabels.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EnumLabels.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\ValidationErrors.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ValidationErrors.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Runtime\Caching\EnumerableMemoryCache.cs" />
+    <Compile Include="Runtime\Caching\LockableValue.cs" />
+    <Compile Include="Runtime\Caching\ObjectLockedException.cs" />
+    <Compile Include="Runtime\Caching\RegionableMemoryCache.cs" />
+    <Compile Include="Runtime\GarbageCollector.cs" />
+    <Compile Include="Sedex\Message.cs" />
+    <Compile Include="Sedex\MessageTypes.cs" />
+    <Compile Include="Sedex\Recipients.cs" />
+    <Compile Include="Sedex\Sedex.cs" />
+    <Compile Include="System\ActionFuncExtensions.cs" />
+    <Compile Include="Runtime\IMemory.cs" />
+    <Compile Include="Runtime\PerformanceHelper.cs" />
+    <Compile Include="Runtime\WarningException.cs" />
+    <Compile Include="Runtime\WorkingSet.cs" />
+    <Compile Include="Security\CryptographyHelper.cs" />
+    <Compile Include="Security\DTOs\PasswordEdit.cs" />
+    <Compile Include="Security\DTOs\PermissionTreeViewModel.cs" />
+    <Compile Include="Security\DTOs\RoleViewModel.cs" />
+    <Compile Include="Security\DTOs\UserRoleViewModel.cs" />
+    <Compile Include="Security\Model\GeneratedCode\DomainModelMetadata.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Security\Model\GeneratedCode\FarmGroup.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Security\Model\GeneratedCode\Permission.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Security\Model\GeneratedCode\Role.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Security\Model\GeneratedCode\User.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Security\Model\GeneratedCode\UserRole.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Security\Validation\PasswordValidator.cs" />
+    <Compile Include="Security\Validation\UserValidator.cs" />
+    <Compile Include="Service\DTOs\PocoInfo.cs" />
+    <Compile Include="System\NonContiguousDateTimePeriod.cs" />
+    <Compile Include="System\DateTimePeriod.cs" />
+    <Compile Include="System\Xml\Linq\XElementExtensions.cs" />
+    <Compile Include="Threading\BatchQueue\BatchJobViewModel.cs" />
+    <Compile Include="Threading\BatchQueue\Counter.cs" />
+    <Compile Include="Threading\BatchQueue\ErrorResult.cs" />
+    <Compile Include="Threading\BatchQueue\FinishedResult.cs" />
+    <Compile Include="Threading\BatchQueue\IBatchQueueJob.cs" />
+    <Compile Include="Threading\BatchQueue\ICounted.cs" />
+    <Compile Include="Threading\BatchQueue\WarningResult.cs" />
+    <Compile Include="UI\Geometry\AffineTransform.cs" />
+    <Compile Include="System\Web\Mvc\SelectListItemWithCustomData.cs" />
+    <Compile Include="Validation\FluentValidation\CompositeValidator.cs" />
+    <Compile Include="Validation\FluentValidation\IValidatorFactory.cs" />
+    <Compile Include="Web\Mvc\Attributes\ActionFilters\ActionExecutingContextHelper.cs" />
+    <Compile Include="Web\Mvc\Attributes\GridColumnAttribute.cs" />
+    <Compile Include="Web\Mvc\Grid\Columns\GridCheckEditColumn.cs" />
+    <Compile Include="Web\Mvc\Grid\Columns\GridCustomColumn.cs" />
+    <Compile Include="Web\Api\IPermissionChecker.cs" />
+    <Compile Include="Web\Mvc\Grid\Columns\GridStatusColumn.cs" />
+    <Compile Include="Web\Mvc\Grid\Command\GridCheckEditActionCommand.cs" />
+    <Compile Include="Web\Mvc\Grid\Command\GridCheckGeoActionCommand.cs" />
+    <Compile Include="Web\Mvc\IPermissionChecker.cs" />
+    <Compile Include="Security\PermissionHelper.cs" />
+    <Compile Include="Security\DTOs\IUserDTO.cs" />
+    <Compile Include="Security\Model\GeneratedCode\AgrideaService.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Security\Model\GeneratedCode\IAgrideaService.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Security\Model\GeneratedCode\SecurityDomainModelContext.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Service\Repository\AgrideaCoreDbConfiguration.cs" />
+    <Compile Include="Service\Tools.cs" />
+    <Compile Include="Service\SuperService.cs" />
+    <Compile Include="Service\ISuperService.cs" />
+    <Compile Include="System\ByteExtensions.cs" />
+    <Compile Include="System\Collections\CollectionsExtensions.cs" />
+    <Compile Include="System\Data\DataRowExtensions.cs" />
+    <Compile Include="System\DecimalExtensions.cs" />
+    <Compile Include="System\DoubleExtensions.cs" />
+    <Compile Include="System\EnumExtensions.cs" />
+    <Compile Include="System\IntegerExtensions.cs" />
+    <Compile Include="System\Linq\ExpressionVisitors.cs" />
+    <Compile Include="System\Linq\QueryableExtensions.cs" />
+    <Compile Include="System\LongExtensions.cs" />
+    <Compile Include="System\NullSafeExtensions.cs" />
+    <Compile Include="System\ObjectExtensions.cs" />
+    <Compile Include="System\TabulatedStringExtensions.cs" />
+    <Compile Include="System\TimeSpanExtensions.cs" />
+    <Compile Include="DataRepository\PocoBaseExtensions.cs" />
+    <Compile Include="System\StringExtensions.cs" />
+    <Compile Include="System\Text\RegularExpressions\RegularExpressionsExtensions.cs" />
+    <Compile Include="System\Linq\DynamicLinq.cs" />
+    <Compile Include="System\Linq\LinqExtensions.cs" />
+    <Compile Include="System\DateTimeExtensions.cs" />
+    <Compile Include="System\Reflection\PropertyInfoExtensions.cs" />
+    <Compile Include="News\Model\GeneratedCode\AgrideaService.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="News\Model\GeneratedCode\CallDomainModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="News\Model\GeneratedCode\IAgrideaService.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="News\Model\GeneratedCode\NewsDomainModelContext.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="News\Model\NewsItem.cs" />
+    <Compile Include="News\Validation\NewsValidator.cs" />
+    <Compile Include="Pdf\IPdfBodyDelegate.cs" />
+    <Compile Include="Pdf\PdfBase.cs" />
+    <Compile Include="Reports\HtmlReportMakerStringBuilder.cs" />
+    <Compile Include="Reports\CsvReportMaker.cs" />
+    <Compile Include="Reports\HtmlReportMakerTagBuilder.cs" />
+    <Compile Include="Reports\IReportMaker.cs" />
+    <Compile Include="Reports\PdfReportMaker.cs" />
+    <Compile Include="Reports\ReportModel\Enums\ReportStyles.cs" />
+    <Compile Include="Reports\ReportModel\Enums\ReportAlignments.cs" />
+    <Compile Include="Reports\ReportModel\Enums\ReportColors.cs" />
+    <Compile Include="Reports\ReportModel\Enums\ExportModes.cs" />
+    <Compile Include="Reports\ReportModel\Report.cs" />
+    <Compile Include="Reports\ReportModel\Table.cs" />
+    <Compile Include="Reports\ReportModel\Cell.cs" />
+    <Compile Include="Reports\ReportModel\Header.cs" />
+    <Compile Include="Reports\ReportModel\Row.cs" />
+    <Compile Include="Security\DTOs\PermissionDTO.cs" />
+    <Compile Include="Security\DTOs\EditRoleDTO.cs" />
+    <Compile Include="Security\Model\User.cs" />
+    <Compile Include="Security\Model\GeneratedCode\CallDomainModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Service\DataImport.cs" />
+    <Compile Include="Service\ImporterBase.cs" />
+    <Compile Include="Service\Repository\AgrideaCoreDataRepositoryFactory.cs" />
+    <Compile Include="Service\Repository\AgrideaCoreDataRepositoryContext.cs" />
+    <Compile Include="Service\Repository\AgrideaCoreDataRepository.cs" />
+    <Compile Include="Security\DTOs\RoleNameDTO.cs" />
+    <Compile Include="Security\Model\PermissionTypes.cs" />
+    <Compile Include="Security\Validation\RoleNameDTOValidator.cs" />
+    <Compile Include="Security\Validation\RoleValidator.cs" />
+    <Compile Include="Service\AgrideaService.cs" />
+    <Compile Include="Service\IAgrideaService.cs" />
+    <Compile Include="DataRepository\DataRepositoryHelper.cs" />
+    <Compile Include="DataRepository\IDataRepository.cs" />
+    <Compile Include="DataRepository\IDataRepositoryFactory.cs" />
+    <Compile Include="DataRepository\IntegrityException.cs" />
+    <Compile Include="DataRepository\InvalidKeyException.cs" />
+    <Compile Include="DataRepository\PocoBase.cs" />
+    <Compile Include="DataRepository\SqlServer\SqlServerContextBase.cs" />
+    <Compile Include="DataRepository\SqlServer\SqlServerDataRepositoryBase.cs" />
+    <Compile Include="Diagnostics\Contracts\Asserts.cs" />
+    <Compile Include="Diagnostics\Contracts\Requires.cs" />
+    <Compile Include="Diagnostics\Logging\Log.cs" />
+    <Compile Include="Disposable.cs" />
+    <Compile Include="Finalizable.cs" />
+    <Compile Include="System\BooleanExtensions.cs" />
+    <Compile Include="ProductInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\DTOs\ChangePasswordDTO.cs" />
+    <Compile Include="Security\DTOs\LogOnDTO.cs" />
+    <Compile Include="Security\DTOs\UserNameDTO.cs" />
+    <Compile Include="Security\Model\Permission.cs" />
+    <Compile Include="Security\Model\Role.cs" />
+    <Compile Include="Security\PasswordHelper.cs" />
+    <Compile Include="Security\Validation\ChangePasswordDTOValidator.cs" />
+    <Compile Include="Security\Validation\FluentValidationExtensions.cs" />
+    <Compile Include="Security\Validation\LogOnDTOValidator.cs" />
+    <Compile Include="Security\Validation\UserNameDTOValidator.cs" />
+    <Compile Include="Service\IService.cs" />
+    <Compile Include="Service\ServiceBase.cs" />
+    <Compile Include="System\TypeExtensions.cs" />
+    <Compile Include="Service\UnitOfWork.cs" />
+    <Compile Include="System\Web\Mvc\JsonDataContractResult.cs" />
+    <Compile Include="System\Web\Mvc\PartialScriptInclude.cs" />
+    <Compile Include="System\Web\Mvc\SelectListExtensions.cs" />
+    <Compile Include="System\Web\Routing\RouteValueDictionaryExtensions.cs" />
+    <Compile Include="Threading\BatchQueue\BatchQueue.cs" />
+    <Compile Include="Threading\BatchQueue\IBatchQueue.cs" />
+    <Compile Include="Threading\ICancelable.cs" />
+    <Compile Include="Threading\BatchQueue\IJob.cs" />
+    <Compile Include="Threading\BatchQueue\JobBase.cs" />
+    <Compile Include="Threading\BatchQueue\JobCanceledEventArgs.cs" />
+    <Compile Include="Threading\BatchQueue\JobCanceledEventHandler.cs" />
+    <Compile Include="Threading\BatchQueue\JobFailedEventArgs.cs" />
+    <Compile Include="Threading\BatchQueue\JobFailedEventHandler.cs" />
+    <Compile Include="Threading\BatchQueue\JobProgressEventArgs.cs" />
+    <Compile Include="Threading\BatchQueue\JobProgressEventHandler.cs" />
+    <Compile Include="Threading\BatchQueue\JobStates.cs" />
+    <Compile Include="Timers\ITime.cs" />
+    <Compile Include="Timers\ITimer.cs" />
+    <Compile Include="Timers\Time.cs" />
+    <Compile Include="Timers\TimeEventArgs.cs" />
+    <Compile Include="Timers\TimeEventHandler.cs" />
+    <Compile Include="Timers\Timer.cs" />
+    <Compile Include="UI\CommandLine\CommandLineSwitch.cs" />
+    <Compile Include="UI\CommandLine\CommandLineSwitches.cs" />
+    <Compile Include="Validation\FluentValidation\BasicValidators\BeUniqueValidator.cs" />
+    <Compile Include="Validation\FluentValidation\BasicValidators\IsPriceValidator.cs" />
+    <Compile Include="Validation\ValidationErrorLevel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Wcf\LoggingAndPerformanceHelper.cs" />
+    <Compile Include="Web\Api\Attributes\HttpActionContextHelper.cs" />
+    <Compile Include="Web\Api\Attributes\LoggingAttribute.cs" />
+    <Compile Include="Web\Api\Attributes\UnhandledExceptionFilter.cs" />
+    <Compile Include="Web\Helpers\MimeTypeHelper.cs" />
+    <Compile Include="Web\Mvc\Attributes\WebFarmCompatibleAttribute.cs" />
+    <Compile Include="Web\Mvc\Attributes\AlwaysAuthorizedAttribute.cs" />
+    <Compile Include="Web\Mvc\AutoComplete\AutoCompleteBase.cs" />
+    <Compile Include="Web\Mvc\AutoComplete\AutoCompleteEntity.cs" />
+    <Compile Include="Web\Mvc\AutoComplete\AutoCompleteExtensions.cs" />
+    <Compile Include="Web\Mvc\Grid\AjaxConfirm.cs" />
+    <Compile Include="Web\Mvc\Grid\Columns\GridCheckImageColumn.cs" />
+    <Compile Include="Web\Mvc\Grid\Columns\GridActionLinkColumn.cs" />
+    <Compile Include="Web\Mvc\Grid\Columns\GridListColumn.cs" />
+    <Compile Include="Web\Mvc\Grid\Fluent\GridActionCommandBuilder.cs" />
+    <Compile Include="Web\Mvc\Grid\Fluent\GridActionCommandBuilderBase.cs" />
+    <Compile Include="Web\Mvc\Grid\Fluent\GridCreateActionCommandBuilder.cs" />
+    <Compile Include="Web\Mvc\Grid\Fluent\GridSortFactory.cs" />
+    <Compile Include="Web\Mvc\Grid\Fluent\GridSortOptionBuilder.cs" />
+    <Compile Include="Web\Mvc\Grid\IHideObjectMembers.cs" />
+    <Compile Include="Web\Mvc\Grid\Ordering\SortOption.cs" />
+    <Compile Include="Web\Mvc\Grid\Pagination\PageSizes.cs" />
+    <Compile Include="Web\Mvc\Grid\Renderers\CsvRenderer\CsvRenderer.cs" />
+    <Compile Include="Web\Mvc\Grid\Renderers\HtmlRenderer\ToolBarRenderer.cs" />
+    <Compile Include="Web\Mvc\ModelBinders\DecimalModelBinder.cs" />
+    <Compile Include="Web\Mvc\Session\WebSiteSession.cs" />
+    <Compile Include="Web\Mvc\UTF8FileResult.cs" />
+    <Compile Include="Web\Mvc\Grid\Aggregates\AggregateFunction.cs" />
+    <Compile Include="Web\Mvc\Grid\Aggregates\SumFunction.cs" />
+    <Compile Include="Web\Mvc\Grid\Columns\CustomHeader.cs" />
+    <Compile Include="Web\Mvc\Grid\Columns\GridActionColumn.cs" />
+    <Compile Include="Web\Mvc\Grid\Columns\GridBoundColumn.cs" />
+    <Compile Include="Web\Mvc\Grid\Columns\GridCalendarColumn.cs" />
+    <Compile Include="Web\Mvc\Grid\Columns\GridCheckBoxColumn.cs" />
+    <Compile Include="Web\Mvc\Grid\Columns\GridColumnBase.cs" />
+    <Compile Include="Web\Mvc\Grid\Columns\GridComboColumn.cs" />
+    <Compile Include="Web\Mvc\Grid\Columns\GridEditColumn.cs" />
+    <Compile Include="Web\Mvc\Grid\Columns\GridEditorColumn.cs" />
+    <Compile Include="Web\Mvc\Grid\Columns\GridHiddenColumn.cs" />
+    <Compile Include="Web\Mvc\Grid\Columns\GridTextBoxColumn.cs" />
+    <Compile Include="Web\Mvc\Grid\Columns\IGridBoundColumn.cs" />
+    <Compile Include="Web\Mvc\Grid\Columns\IGridColumn.cs" />
+    <Compile Include="Web\Mvc\Grid\Columns\IGridEditColumn.cs" />
+    <Compile Include="Web\Mvc\Grid\Command\GridActionCommand.cs" />
+    <Compile Include="Web\Mvc\Grid\Command\GridActionCommandBase.cs" />
+    <Compile Include="Web\Mvc\Grid\Command\ICommand.cs" />
+    <Compile Include="Web\Mvc\Grid\Extensions\ExpressionExtensions.cs" />
+    <Compile Include="Web\Mvc\Grid\Extensions\GridHelper.cs" />
+    <Compile Include="Web\Mvc\Grid\Fluent\GridActionColumnBuilder.cs" />
+    <Compile Include="Web\Mvc\Grid\Fluent\GridActionCommandFactory.cs" />
+    <Compile Include="Web\Mvc\Grid\Fluent\GridBoundColumnBuilder.cs" />
+    <Compile Include="Web\Mvc\Grid\Fluent\GridColumnBuilderBase.cs" />
+    <Compile Include="Web\Mvc\Grid\Fluent\GridDataKeyFactory.cs" />
+    <Compile Include="Web\Mvc\Grid\Fluent\GridEditColumnBuilder.cs" />
+    <Compile Include="Web\Mvc\Grid\Fluent\GridExpressionColumnBuilder.cs" />
+    <Compile Include="Web\Mvc\Grid\Fluent\GridHelper.cs" />
+    <Compile Include="Web\Mvc\Grid\Fluent\GridToolBarCommandFactory.cs" />
+    <Compile Include="Web\Mvc\Grid\Grid.cs" />
+    <Compile Include="Web\Mvc\Grid\Fluent\GridColumnFactory.cs" />
+    <Compile Include="Web\Mvc\Grid\GridModel.cs" />
+    <Compile Include="Web\Mvc\Grid\GridViewDataContainer.cs" />
+    <Compile Include="Web\Mvc\Grid\IGridDataKey.cs" />
+    <Compile Include="Web\Mvc\Grid\IGridModel.cs" />
+    <Compile Include="Web\Mvc\Grid\Ordering\IOrdering.cs" />
+    <Compile Include="Web\Mvc\Grid\Ordering\Ordering.cs" />
+    <Compile Include="Web\Mvc\Grid\Pagination\IPagination.cs" />
+    <Compile Include="Web\Mvc\Grid\Pagination\Pagination.cs" />
+    <Compile Include="Web\Mvc\Grid\Parameters\GridClass.cs" />
+    <Compile Include="Web\Mvc\Grid\Parameters\GridParameters.cs" />
+    <Compile Include="Web\Mvc\Grid\GridDataKey.cs" />
+    <Compile Include="Web\Mvc\Grid\Parameters\JQueryUI.cs" />
+    <Compile Include="Web\Mvc\Grid\MeasuringUnit.cs" />
+    <Compile Include="Web\Mvc\Grid\Renderers\HtmlRenderer\BodyRenderer.cs" />
+    <Compile Include="Web\Mvc\Grid\Renderers\HtmlRenderer\HeaderRenderer.cs" />
+    <Compile Include="Web\Mvc\Grid\Renderers\HtmlRenderer\Pager.cs" />
+    <Compile Include="Web\Mvc\Grid\Renderers\HtmlRenderer\Renderer.cs" />
+    <Compile Include="Web\Mvc\Grid\ToolBar\GridToolBar.cs" />
+    <Compile Include="Web\Mvc\Menu\DynamicMenuItem.cs" />
+    <Compile Include="Web\Mvc\DTOs\BugReportDTO.cs" />
+    <Compile Include="Web\Mvc\ModelBinders\AcceptNullAsZeroModelBinder.cs" />
+    <Compile Include="Web\Mvc\StructuredViewEngines.cs" />
+    <Compile Include="Web\Mvc\ReflectionExtensions.cs" />
+    <Compile Include="Web\Mvc\ValueProviders\ModelStateValueProvider.cs" />
+    <Compile Include="Web\Mvc\ViewDataExtensions.cs" />
+    <Compile Include="Web\Helpers\SortHelper.cs" />
+    <Compile Include="Web\Helpers\SubmitButton.cs" />
+    <Compile Include="Web\Mvc\Attributes\ActionFilters\ModelStateTempDataFilter.cs" />
+    <Compile Include="Web\Mvc\Attributes\ActionFilters\MustHavePermission.cs" />
+    <Compile Include="Web\Mvc\ComboExtensions.cs" />
+    <Compile Include="Web\Mvc\FluentTagBuilder.cs" />
+    <Compile Include="Web\Mvc\Menu\IMenuItem.cs" />
+    <Compile Include="Web\Mvc\Menu\IMenuBuilder.cs" />
+    <Compile Include="Web\Mvc\Menu\LinkMenuItem.cs" />
+    <Compile Include="Web\Mvc\Menu\MainMenuItem.cs" />
+    <Compile Include="Web\Mvc\Menu\Menu.cs" />
+    <Compile Include="Web\Mvc\Menu\MenuItemBase.cs" />
+    <Compile Include="Web\Mvc\Menu\Extensions\MenuItemExtensions.cs" />
+    <Compile Include="Web\Mvc\Menu\Extensions\MvcExtensions.cs" />
+    <Compile Include="Web\Mvc\Menu\NoLinkMenuItem.cs" />
+    <Compile Include="Web\Mvc\Menu\RootMenuItem.cs" />
+    <Compile Include="Validation\FluentValidation\BasicValidators\LessThanOrEqualsToPropertyValidator.cs" />
+    <Compile Include="Validation\FluentValidation\BasicValidators\MaximumIntegerValueValidator.cs" />
+    <Compile Include="Validation\FluentValidation\BasicValidators\MinimumIntegerValueValidator.cs" />
+    <Compile Include="Validation\FluentValidation\BasicValidators\NonZeroDependentIntegerValuesValidator.cs" />
+    <Compile Include="Validation\FluentValidation\BasicValidators\NotNullIfNotZeroValidator.cs" />
+    <Compile Include="Validation\FluentValidation\BasicValidators\NotZeroIfNotNullValidator.cs" />
+    <Compile Include="Validation\FluentValidation\BasicValidators\TotalIntegerValuesValidator.cs" />
+    <Compile Include="Validation\FluentValidation\BasicValidators\TotalMinimumIntegerValueValidator.cs" />
+    <Compile Include="Validation\FluentValidation\FluentValidationConstants.cs" />
+    <Compile Include="Validation\FluentValidation\FluentValidationExtensions.cs" />
+    <Compile Include="Validation\ValidationException.cs" />
+    <Compile Include="Web\Mvc\HtmlHelperExtensions.cs" />
+    <Compile Include="Web\Mvc\MvcConstants.cs" />
+    <Compile Include="Web\Mvc\MvcExpressionHelper.cs" />
+    <Compile Include="Web\Mvc\ControllerExtensions.cs" />
+    <Compile Include="Web\Mvc\RouteValueDictionaryExtensions.cs" />
+    <Compile Include="Web\Mvc\UrlHelperExtensions.cs" />
+    <Compile Include="Web\Services\WebServicesHelper.cs" />
+    <Compile Include="Web\UI\ICheckChanged.cs" />
+    <Compile Include="Web\UI\ITrackEditionChanges.cs" />
+    <Compile Include="Web\UI\Model\AgrideaService.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Web\UI\Model\CallDomainModel.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Web\UI\Model\DomainModelMetadata.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Web\UI\Model\EditionStates.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Web\UI\Model\IAgrideaService.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Web\UI\Model\WebUiModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebUiModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Web\UI\Model\WebUiModelContext.cs">
+      <DependentUpon>CallDomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Web\UI\OrderedPagination.cs" />
+    <Compile Include="Web\UI\PaginationHelper.cs" />
+    <Compile Include="Web\UI\PaginationOptions.cs" />
+    <Compile Include="Web\UI\RedirectUrlTool.cs" />
+    <Compile Include="Web\UI\NavigationHistory.cs" />
+    <Compile Include="Web\UI\SearchEnum.cs" />
+    <Compile Include="Web\UI\SortDirection.cs" />
+    <Compile Include="Web\UI\TreeNode.cs" />
+    <Compile Include="Xml\XmlLinqExtensions.cs" />
+    <Compile Include="Xml\XmlHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\AgrideaCoreStrings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AgrideaCoreStrings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EnumLabels.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EnumLabels.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ValidationErrors.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ValidationErrors.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Calendar\Model\GeneratedCode\CallDomainModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CallDomainModel.cs</LastGenOutput>
+      <CustomToolNamespace>Agridea.News</CustomToolNamespace>
+    </None>
+    <EntityDeploy Include="Calendar\Model\GeneratedCode\CalendarDomainModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CalendarDomainModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DataRepository\CodeGeneration\WebApiServerTools.tt" />
+    <None Include="DataRepository\CodeGeneration\WebApiServerModelTools.tt" />
+    <None Include="DataRepository\CodeGeneration\WebApiServerModel.tt" />
+    <None Include="DataRepository\CodeGeneration\WebApiServer.tt" />
+    <None Include="DataRepository\CodeGeneration\OracleImporter.tt">
+      <LastGenOutput>OracleImporter.cs</LastGenOutput>
+    </None>
+    <EntityDeploy Include="DataRepository\Metadata\Model\GeneratedCode\MetadataDomainModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MetadataDomainModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="packages.config" />
+    <None Include="Security\Model\GeneratedCode\SecurityDomainModel.edmx" />
+    <None Include="Agridea.snk" />
+    <None Include="App.Config" />
+    <None Include="DataRepository\CodeGeneration\DomainModel.tt">
+      <TransformOnBuild>False</TransformOnBuild>
+    </None>
+    <None Include="DataRepository\CodeGeneration\Tools.tt" />
+    <None Include="News\Model\GeneratedCode\NewsDomainModel.edmx" />
+    <None Include="News\Model\GeneratedCode\CallDomainModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CallDomainModel.cs</LastGenOutput>
+      <CustomToolNamespace>Agridea.News</CustomToolNamespace>
+    </None>
+    <None Include="Security\Model\GeneratedCode\CallDomainModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CallDomainModel.cs</LastGenOutput>
+      <CustomToolNamespace>Agridea.Security</CustomToolNamespace>
+    </None>
+    <EntityDeploy Include="Web\UI\Model\WebUiModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>WebUiModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Web\UI\Model\CallDomainModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CallDomainModel.cs</LastGenOutput>
+      <CustomToolNamespace>Agridea.Security</CustomToolNamespace>
+    </None>
+    <None Include="Web\UI\Model\WebUiModel.edmx.diagram">
+      <DependentUpon>WebUiModel.edmx</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DataRepository\Metadata\Model\GeneratedCode\CallDomainModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CallDomainModel.cs</LastGenOutput>
+      <CustomToolNamespace>Agridea.News</CustomToolNamespace>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

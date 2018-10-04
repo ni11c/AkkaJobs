@@ -1,0 +1,1272 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7D74A18E-C041-44CE-B5BC-4CDF0651F723}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Agridea.Acorda.Acorda2.WebApiModel</RootNamespace>
+    <AssemblyName>Acorda2WebApiModel</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>1</WarningLevel>
+    <DocumentationFile>bin\Release\Acorda2WebApiModel.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugBbsUnitTests|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\DebugBbsUnitTests\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>bin\Debug\Acorda2WebApiModel.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http">
+      <HintPath>..\packages\System.Net.Http.2.0.20126.16343\lib\net40\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+      <HintPath>..\packages\System.Net.Http.2.0.20126.16343\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AcordaWebApiClient.cs" />
+    <Compile Include="Models\Canton.cs" />
+    <Compile Include="GeneratedCode\AcGroup.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AcGroupReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Acompte.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AcompteReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AcPoint.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AcPointReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AcPossibleDefect.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AcPossibleDefectReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AcReduction.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AcReductionReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AcRubric.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AcRubricReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AcSuggestedSanction.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AcSuggestedSanctionReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AgateUser.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AgateUserReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AgriculturalOffice.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AgriculturalOfficeReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AgriculturalZone.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AgriculturalZoneReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Animal.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AnimalCategory.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AnimalCategoryReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AnimalHobby.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AnimalHobbyReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AnimalInspection.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AnimalInspectionReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AnimalReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AnimalTvd.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AnimalTvdInspection.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AnimalTvdInspectionReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AnimalTvdReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AnimalType.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AnimalTypeReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Area.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AreaReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AssignedLandCover.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\AssignedLandCoverReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Bank.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BankAccount.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BankAccountReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BankReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BatchJob.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BatchJobReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BdNetwork.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BdNetworkReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BdProject.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BdProjectReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BdQuality.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BdQualityAmount.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BdQualityAmountReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BdQualityReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BdSummeringQuality.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BdSummeringQualityReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Bees.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BeesReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BioCategory.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BioCategoryReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BioRegistration.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BioRegistrationReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Borough.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BoroughReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BtsRausQuittance.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BtsRausQuittanceReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BtsRausRegistration.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BtsRausRegistrationReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CadastralLandCover.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CadastralLandCoverReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CadastralLandCoverType.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CadastralLandCoverTypeReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CadastralParcel.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CadastralParcelReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Calc.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcBdNetworkPerCulture.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcBdNetworkPerCultureReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcBdQualityDetail.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcBdQualityDetailReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcComment.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcCommentReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcKlGrapePerCategory.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcKlGrapePerCategoryReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcKlOpenKeepingPerZone.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcKlOpenKeepingPerZoneReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcKlSlopePerCategory.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcKlSlopePerCategoryReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcKlSummeringPerCategory.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcKlSummeringPerCategoryReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcLqPerProject.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcLqPerProjectReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcLqSoemPerProject.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcLqSoemPerProjectReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcPsBtsRausPerCategory.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcPsBtsRausPerCategoryReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcPsExtensoPerCategory.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcPsExtensoPerCategoryReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcPsGmfPerZone.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcPsGmfPerZoneReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcReTreatmentPerTechnique.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcReTreatmentPerTechniqueReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcVariable.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcVariableReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcVsProductionDifficultyPerZone.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CalcVsProductionDifficultyPerZoneReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CallWebApiServerModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Canton.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CantonalMunicipality.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CantonalMunicipalityReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CantonReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CategorieCodeGestion.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CategorieCodeGestionReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CbeCategorieTiers.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CbeCategorieTiersReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CbeMesure.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CbeMesureReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CbeObjet.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CbeObjetPreAdressing.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CbeObjetPreAdressingReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CbeObjetReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CbeOrganeTiers.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CbeOrganeTiersReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CbeParticipationTiers.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CbeParticipationTiersReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CbeQualification.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CbeQualificationReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CerLowEmissionFertilization.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CerLowEmissionFertilizationNextYear.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CerLowEmissionFertilizationNextYearPrior.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CerLowEmissionFertilizationNextYearPriorReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CerLowEmissionFertilizationNextYearReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CerLowEmissionFertilizationPrior.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CerLowEmissionFertilizationPriorReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CerLowEmissionFertilizationReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CerMildSoilTreatment.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CerMildSoilTreatmentNextYear.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CerMildSoilTreatmentNextYearPrior.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CerMildSoilTreatmentNextYearPriorReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CerMildSoilTreatmentNextYearReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CerMildSoilTreatmentPrior.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CerMildSoilTreatmentPriorReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CerMildSoilTreatmentReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CerPrecisePesticideApplication.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CerPrecisePesticideApplicationReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CerTechnique.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CerTechniqueReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CodeGestion.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CodeGestionReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CommentaireDossier.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CommentaireDossierReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Community.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CommunityReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Constant.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ConstantReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ContributionAskRecensement.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ContributionAskRecensementReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ContributionTransition.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ContributionTransitionCorrection2014.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ContributionTransitionCorrection2014Reference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ContributionTransitionDetail.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ContributionTransitionDetailReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ContributionTransitionReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ContributionTransitionVariable.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ContributionTransitionVariableReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Country.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CountryReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CqpCountrysideQualityProject.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CqpCountrysideQualityProjectReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CqpMeasure.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CqpMeasureReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CqpParticipation.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CqpParticipationPrior.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CqpParticipationPriorReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CqpParticipationReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CultivationType.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CultivationTypeReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\DirectPayment2008.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\DirectPayment2008Reference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\District.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\DistrictReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\DomainModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DomainModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\DtaParametre.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\DtaParametreReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EcoEthoPdfConditions.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EcoEthoPdfConditionsReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EcoEthoRecensementPdf.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EcoEthoRecensementPdfReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Education.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EducationReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EmailCc.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EmailCcReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EpizooticTax.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EpizooticTaxReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EstiAlpage.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EstiAlpageReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EstiAnimal.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EstiAnimalReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EstiAnimalTvd.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EstiAnimalTvdDetail.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EstiAnimalTvdDetailReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EstiAnimalTvdReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EstiBerger.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EstiBergerReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EstiModeGardeMouton.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EstiModeGardeMoutonReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EstiParametre.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EstiParametreReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EstiProprietaire.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EstiProprietaireReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EthoProgram.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\EthoProgramReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ExtensoCategory.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ExtensoCategoryReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ExtensoRegistration.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ExtensoRegistrationReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Farm.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\FarmGeneralData.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\FarmGeneralDataReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\FarmReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\FarmType.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\FarmTypeReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\FiscInfo.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\FiscInfoReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Fish.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\FishCode.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\FishCodeReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\FishReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\FishStock.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\FishStockReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\GeoBatchOperation.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\GeoBatchOperationReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\GeoParcelAreaTempData.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\GeoParcelAreaTempDataReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\HistoryCalc.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\HistoryCalcComment.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\HistoryCalcCommentReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\HistoryCalcReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\HistoryCalcVariable.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\HistoryCalcVariableReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\HistorySuppressedFarm.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\HistorySuppressedFarmReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ImportOperation.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ImportOperationFile.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ImportOperationFileReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ImportOperationReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ImportOperationType.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ImportOperationTypeReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\InspectionFee.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\InspectionFeeReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\InspectionOrganisation.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\InspectionOrganisationReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\KtidbChangeHistory.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\KtidbChangeHistoryReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\LandCover.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\LandCoverReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\LandCoverType.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\LandCoverTypeGroup.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\LandCoverTypeGroupReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\LandCoverTypeReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Language.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\LanguageReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\LegalForm.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\LegalFormReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\MaritalStatusType.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\MaritalStatusTypeReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\MrMrsExtended.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\MrMrsExtendedReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Municipality.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\MunicipalityReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Notification.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\NotificationReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Oeln.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\OelnCategory.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\OelnCategoryReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\OelnReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\OelnRegistration.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\OelnRegistrationReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Paiement.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PaiementAnneePrecedente.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PaiementAnneePrecedenteReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PaiementReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Parcel.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelExchange.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelExchangeReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelHobby.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelHobbyReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelInformation.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelInformationFile.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelInformationFileReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelInformationReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelInformationType.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelInformationTypeReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelInspection.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelInspectionBefore2012.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelInspectionBefore2012Reference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelInspectionReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelNextYear.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelNextYearReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelPreAdressing.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelPreAdressingReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelProbleme.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelProblemeReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelProblemType.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelProblemTypeReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ParcelReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PaymentCategory.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PaymentCategoryReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PaymentRegistration.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PaymentRegistrationReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PaymentTransfer.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PaymentTransferReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PaymentType.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PaymentTypeReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PerInspector.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PerInspectorReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Person.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PersonEdition.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PersonEditionReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PersonReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PigsStablingMethod.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PigsStablingMethodReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PoultryStablingMethod.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PoultryStablingMethodReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PreparationPaiement.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PreparationPaiementReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PreparationPaymentTransfer.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PreparationPaymentTransferReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PreparationTransactionComptable.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PreparationTransactionComptableReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PreviousYearAmount.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PreviousYearAmountReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\RecensementInfo.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\RecensementInfoCategory.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\RecensementInfoCategoryReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\RecensementInfoReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\RecensementPdf.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\RecensementPdfReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\RecensementStatus.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\RecensementStatusReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\RecensementWorkFlow.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\RecensementWorkFlowReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Reduction.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ReductionCantonale.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ReductionCantonaleReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ReductionMainType.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ReductionMainTypeReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ReductionProfessionnelle.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ReductionProfessionnelleReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ReductionReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ReductionType.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ReductionTypeReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\RegistrationsPreviousYear.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\RegistrationsPreviousYearReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\SuiviDossier.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\SuiviDossierReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\TaxationType.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\TaxationTypeReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\TaxeVeterinaire.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\TaxeVeterinaireReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\TempFileUpload.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\TempFileUploadReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ThirdParty.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ThirdPartyMember.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ThirdPartyMemberReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ThirdPartyReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Town.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\TownReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\TransactionComptable.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\TransactionComptableReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\TransactionComptableType.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\TransactionComptableTypeReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\TvdInfo.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\TvdInfoReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\TypeReductionCantonale.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\TypeReductionCantonaleReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\UniteMesure.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\UniteMesureReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\WebApiOperation.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\WebApiOperationReference.cs">
+      <DependentUpon>CallWebApiServerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LoginViewModel.cs" />
+    <Compile Include="Infrastructure\Disposable.cs" />
+    <Compile Include="Infrastructure\ProductInfo.cs" />
+    <Compile Include="Models\Exercice.cs" />
+    <Compile Include="Models\PaymentFarmType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnauthorisedException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="GeneratedCode\CallWebApiServerModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CallWebApiServerModel.cs</LastGenOutput>
+    </None>
+    <EntityDeploy Include="GeneratedCode\DomainModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DomainModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AgrideaCore\AgrideaCore.csproj">
+      <Project>{a5a5fa30-82dd-462e-a784-a37999f7541d}</Project>
+      <Name>AgrideaCore</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

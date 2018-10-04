@@ -1,0 +1,19 @@
+﻿<#@ template hostSpecific="true" debug="true"#>
+<#@ include file="../../AgrideaCore/DataRepository/CodeGeneration/WebApiServerModel.tt" #>
+<#
+    //System.Diagnostics.Debugger.Launch(); 
+    string inputFile = "DomainModel.edmx";
+	
+   var textTransform = DynamicTextTransformation.Create(this);
+	var code = new CodeGenerationTools(this);
+	var ef = new MetadataTools(this);
+	var typeMapper = new TypeMapper(code, ef, textTransform.Errors);
+	var loader = new EdmMetadataLoader(textTransform.Host, textTransform.Errors);
+	
+	Parameters.Reset();
+	Parameters.Current.Add(loader.CreateEdmItemCollection(inputFile));
+	
+    Parameters.NameSpace = "Agridea.Acorda.Acorda2.WebApi.Model";
+
+    GenerateCode(inputFile);
+#>

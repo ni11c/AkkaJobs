@@ -1,0 +1,146 @@
+﻿<#
+/////////////////////////////////////////////////////////////////////////////////
+//                                                                             //
+// Copyright (c) 2010-2011 Agridea, Inc. All Rights Reserved                   //
+//                                                                             //
+/////////////////////////////////////////////////////////////////////////////////
+#>
+
+<#@ include file="Tools.tt"#>
+<#@ assembly name="$(ProjectDir)$(OutDir)AgrideaCore.dll" #>
+<#@ import namespace="Agridea.DataRepository" #>
+
+<#+
+
+
+string GenerateEagerPocoLists() 
+{
+    CodeGenerationParameters.Code = new CodeGenerationTools(this);
+    CodeGenerationParameters.Region = new CodeRegion(this, 1);
+    CodeGenerationParameters.EF = new MetadataTools(this);
+
+    EntityFrameworkTemplateFileManager fileManager = EntityFrameworkTemplateFileManager.Create(this);
+
+    WriteHeader(fileManager, new string[]{"Agridea.Acorda.Acorda2"});
+    string importerNamespace = Parameters.NameSpace;
+    BeginNamespace(importerNamespace, CodeGenerationParameters.Code);
+    EndNamespace(importerNamespace);
+
+    fileManager.StartNewFile("EagerPocoLists.cs");
+    BeginNamespace(importerNamespace, CodeGenerationParameters.Code);
+
+    GenerateEagerPocoList();
+
+    EndNamespace(importerNamespace);
+    fileManager.Process();
+
+    return "generation done";
+}
+string GenerateImporters(string canton)
+{   
+    CodeGenerationParameters.Code = new CodeGenerationTools(this);
+    CodeGenerationParameters.Region = new CodeRegion(this, 1);
+    CodeGenerationParameters.EF = new MetadataTools(this);
+
+    EntityFrameworkTemplateFileManager fileManager = EntityFrameworkTemplateFileManager.Create(this);
+
+    WriteHeader(fileManager, new string[]{"Agridea.Acorda.Acorda2"});
+    string importerNamespace = Parameters.NameSpace;
+    BeginNamespace(importerNamespace, CodeGenerationParameters.Code);
+    EndNamespace(importerNamespace);
+
+    fileManager.StartNewFile(string.Format("ConcreteImporters.cs"));
+    BeginNamespace(importerNamespace, CodeGenerationParameters.Code);
+
+    GenerateImporter();
+    
+    EndNamespace(importerNamespace);
+    fileManager.Process();
+
+    return "generation done";
+}
+
+
+void GenerateImporter()
+    {
+        var entities = Parameters.Current.AllIncludingIgnoredButInterAssembly();
+        foreach (var entity in entities) {
+            if (Parameters.EntityMappings[entity.Name] == null || CodeGenerationHelper.IgnoreButInterAssembly(entity)) {              
+#>
+            //IGNORE <#=entity.Name#>
+<#+
+                continue;
+            }
+            var targetName= entity.Name;
+            var sourceName= Parameters.EntityMappings[entity.Name];
+#>
+public sealed partial class Import<#=targetName#> : ImporterBase<<#=sourceName#>, <#=targetName#>, IAcorda2Service>
+{ 
+    public override void SqlBulkCopy(IEnumerable<<#=targetName#>> items) 
+    {
+        Mapping.TargetService.SqlBulkCopy(items);
+    }
+    public override <#=targetName#> GetByDiscriminants(<#=targetName#> source)
+    {   
+        return Mapping.TargetService.GetByDiscriminants(source);
+    }
+    public override <#=targetName#> GetByDiscriminants(<#=targetName#> source, IList<<#=targetName#>> existingItems)
+    {   
+        return Mapping.TargetService.GetByDiscriminants(source, <#=string.Format("EagerPocoLists.{0}List", targetName)#>);
+    }
+    public override void CascadeRemove(<#=targetName#> item)
+    {
+        Mapping.TargetService.CascadeRemove(item);
+    }
+    public override void SqlUpdate(IEnumerable<<#=targetName#>> items)
+    {
+        Mapping.TargetService.SqlUpdate(items);
+    }
+    //public override void SqlInsert(IEnumerable<<#=targetName#>> items)
+    //{
+    //    Mapping.TargetService.SqlInsert(items);
+    //}
+}
+<#+        
+        }
+    }
+
+void GenerateEagerPocoList()
+{
+    var entities= Parameters.Current.AllIncludingIgnoredButInterAssembly();
+#>
+public static class EagerPocoLists
+{
+    private static IAcorda2Service targetService_;
+    public static IAcorda2Service TargetService
+    {
+        get 
+        {
+            if (targetService_ == null) throw new InvalidOperationException("TargetService must be instanciated");
+            return targetService_;
+        }
+        set {targetService_ = value;}
+    }
+
+<#+
+    foreach (var entity in entities) {
+        if (CodeGenerationHelper.IgnoreButInterAssembly(entity)) continue;
+        var lowerListName= entity.Name.ToLower() + "List_";
+        var listName= entity.Name + "List";
+#>
+    private static List<<#=entity.Name#>> <#=lowerListName#>;
+    public static List<<#=entity.Name#>> <#=listName #>
+    {
+        get 
+        {
+            <#=lowerListName#> = <#=lowerListName #>  ?? TargetService.GetAllWithEagerReferencesAndDiscriminants<<#=entity.Name#>>().ToList();
+            return <#=lowerListName#>;
+        }
+    }
+<#+
+    }
+#>
+}
+<#+
+}
+#>

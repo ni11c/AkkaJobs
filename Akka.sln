@@ -1,0 +1,160 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{740E88D9-5773-47CC-83C2-C1E43508DEAC}"
+	ProjectSection(SolutionItems) = preProject
+		Akka.dgml = Akka.dgml
+		doc.txt = doc.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{3C068A8D-BD37-4AA3-8F78-5982BAADEFE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{AFF2BD13-6387-4A9B-B05E-8AB6F9E736A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Remote", "Remote\Remote.csproj", "{C0515F18-0ADE-4593-A852-87E19271D4FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{18C848E0-B421-45E3-8149-49C46E516C23}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Remote4Web", "RemoteV2\Remote4Web.csproj", "{0DF2481B-C099-4E3F-BF09-1897FC08CB35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agridea.Sedex", "Agridea.Sedex\Agridea.Sedex.csproj", "{FFD70FB6-B388-469D-A063-688E52C23207}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{4D885535-6545-45D6-A9C7-A299DB3EE5B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgrideaCore", "AgrideaCore\AgrideaCore.csproj", "{A5A5FA30-82DD-462E-A784-A37999F7541D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acorda2WebApiModel", "Acorda2WebApiModel\Acorda2WebApiModel.csproj", "{7D74A18E-C041-44CE-B5BC-4CDF0651F723}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonUnitTests", "CommonUnitTests\CommonUnitTests.csproj", "{EA322E3C-1307-4652-B482-8C6A2B24F435}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		DebugBbsUnitTests|Any CPU = DebugBbsUnitTests|Any CPU
+		Release|Any CPU = Release|Any CPU
+		ReleaseImportOracle|Any CPU = ReleaseImportOracle|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3C068A8D-BD37-4AA3-8F78-5982BAADEFE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C068A8D-BD37-4AA3-8F78-5982BAADEFE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C068A8D-BD37-4AA3-8F78-5982BAADEFE8}.DebugBbsUnitTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C068A8D-BD37-4AA3-8F78-5982BAADEFE8}.DebugBbsUnitTests|Any CPU.Build.0 = Debug|Any CPU
+		{3C068A8D-BD37-4AA3-8F78-5982BAADEFE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C068A8D-BD37-4AA3-8F78-5982BAADEFE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C068A8D-BD37-4AA3-8F78-5982BAADEFE8}.ReleaseImportOracle|Any CPU.ActiveCfg = Release|Any CPU
+		{3C068A8D-BD37-4AA3-8F78-5982BAADEFE8}.ReleaseImportOracle|Any CPU.Build.0 = Release|Any CPU
+		{AFF2BD13-6387-4A9B-B05E-8AB6F9E736A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFF2BD13-6387-4A9B-B05E-8AB6F9E736A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFF2BD13-6387-4A9B-B05E-8AB6F9E736A9}.DebugBbsUnitTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFF2BD13-6387-4A9B-B05E-8AB6F9E736A9}.DebugBbsUnitTests|Any CPU.Build.0 = Debug|Any CPU
+		{AFF2BD13-6387-4A9B-B05E-8AB6F9E736A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFF2BD13-6387-4A9B-B05E-8AB6F9E736A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFF2BD13-6387-4A9B-B05E-8AB6F9E736A9}.ReleaseImportOracle|Any CPU.ActiveCfg = Release|Any CPU
+		{AFF2BD13-6387-4A9B-B05E-8AB6F9E736A9}.ReleaseImportOracle|Any CPU.Build.0 = Release|Any CPU
+		{C0515F18-0ADE-4593-A852-87E19271D4FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0515F18-0ADE-4593-A852-87E19271D4FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0515F18-0ADE-4593-A852-87E19271D4FB}.DebugBbsUnitTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0515F18-0ADE-4593-A852-87E19271D4FB}.DebugBbsUnitTests|Any CPU.Build.0 = Debug|Any CPU
+		{C0515F18-0ADE-4593-A852-87E19271D4FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0515F18-0ADE-4593-A852-87E19271D4FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0515F18-0ADE-4593-A852-87E19271D4FB}.ReleaseImportOracle|Any CPU.ActiveCfg = Release|Any CPU
+		{C0515F18-0ADE-4593-A852-87E19271D4FB}.ReleaseImportOracle|Any CPU.Build.0 = Release|Any CPU
+		{18C848E0-B421-45E3-8149-49C46E516C23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18C848E0-B421-45E3-8149-49C46E516C23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18C848E0-B421-45E3-8149-49C46E516C23}.DebugBbsUnitTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{18C848E0-B421-45E3-8149-49C46E516C23}.DebugBbsUnitTests|Any CPU.Build.0 = Debug|Any CPU
+		{18C848E0-B421-45E3-8149-49C46E516C23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18C848E0-B421-45E3-8149-49C46E516C23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18C848E0-B421-45E3-8149-49C46E516C23}.ReleaseImportOracle|Any CPU.ActiveCfg = Release|Any CPU
+		{18C848E0-B421-45E3-8149-49C46E516C23}.ReleaseImportOracle|Any CPU.Build.0 = Release|Any CPU
+		{0DF2481B-C099-4E3F-BF09-1897FC08CB35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DF2481B-C099-4E3F-BF09-1897FC08CB35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DF2481B-C099-4E3F-BF09-1897FC08CB35}.DebugBbsUnitTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DF2481B-C099-4E3F-BF09-1897FC08CB35}.DebugBbsUnitTests|Any CPU.Build.0 = Debug|Any CPU
+		{0DF2481B-C099-4E3F-BF09-1897FC08CB35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DF2481B-C099-4E3F-BF09-1897FC08CB35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DF2481B-C099-4E3F-BF09-1897FC08CB35}.ReleaseImportOracle|Any CPU.ActiveCfg = Release|Any CPU
+		{0DF2481B-C099-4E3F-BF09-1897FC08CB35}.ReleaseImportOracle|Any CPU.Build.0 = Release|Any CPU
+		{FFD70FB6-B388-469D-A063-688E52C23207}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFD70FB6-B388-469D-A063-688E52C23207}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFD70FB6-B388-469D-A063-688E52C23207}.DebugBbsUnitTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFD70FB6-B388-469D-A063-688E52C23207}.DebugBbsUnitTests|Any CPU.Build.0 = Debug|Any CPU
+		{FFD70FB6-B388-469D-A063-688E52C23207}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFD70FB6-B388-469D-A063-688E52C23207}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFD70FB6-B388-469D-A063-688E52C23207}.ReleaseImportOracle|Any CPU.ActiveCfg = Release|Any CPU
+		{FFD70FB6-B388-469D-A063-688E52C23207}.ReleaseImportOracle|Any CPU.Build.0 = Release|Any CPU
+		{4D885535-6545-45D6-A9C7-A299DB3EE5B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D885535-6545-45D6-A9C7-A299DB3EE5B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D885535-6545-45D6-A9C7-A299DB3EE5B1}.DebugBbsUnitTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D885535-6545-45D6-A9C7-A299DB3EE5B1}.DebugBbsUnitTests|Any CPU.Build.0 = Debug|Any CPU
+		{4D885535-6545-45D6-A9C7-A299DB3EE5B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D885535-6545-45D6-A9C7-A299DB3EE5B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D885535-6545-45D6-A9C7-A299DB3EE5B1}.ReleaseImportOracle|Any CPU.ActiveCfg = Release|Any CPU
+		{4D885535-6545-45D6-A9C7-A299DB3EE5B1}.ReleaseImportOracle|Any CPU.Build.0 = Release|Any CPU
+		{A5A5FA30-82DD-462E-A784-A37999F7541D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5A5FA30-82DD-462E-A784-A37999F7541D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5A5FA30-82DD-462E-A784-A37999F7541D}.DebugBbsUnitTests|Any CPU.ActiveCfg = DebugBbsUnitTests|Any CPU
+		{A5A5FA30-82DD-462E-A784-A37999F7541D}.DebugBbsUnitTests|Any CPU.Build.0 = DebugBbsUnitTests|Any CPU
+		{A5A5FA30-82DD-462E-A784-A37999F7541D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5A5FA30-82DD-462E-A784-A37999F7541D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5A5FA30-82DD-462E-A784-A37999F7541D}.ReleaseImportOracle|Any CPU.ActiveCfg = ReleaseImportOracle|Any CPU
+		{A5A5FA30-82DD-462E-A784-A37999F7541D}.ReleaseImportOracle|Any CPU.Build.0 = ReleaseImportOracle|Any CPU
+		{7D74A18E-C041-44CE-B5BC-4CDF0651F723}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D74A18E-C041-44CE-B5BC-4CDF0651F723}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D74A18E-C041-44CE-B5BC-4CDF0651F723}.DebugBbsUnitTests|Any CPU.ActiveCfg = DebugBbsUnitTests|Any CPU
+		{7D74A18E-C041-44CE-B5BC-4CDF0651F723}.DebugBbsUnitTests|Any CPU.Build.0 = DebugBbsUnitTests|Any CPU
+		{7D74A18E-C041-44CE-B5BC-4CDF0651F723}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D74A18E-C041-44CE-B5BC-4CDF0651F723}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D74A18E-C041-44CE-B5BC-4CDF0651F723}.ReleaseImportOracle|Any CPU.ActiveCfg = Release|Any CPU
+		{7D74A18E-C041-44CE-B5BC-4CDF0651F723}.ReleaseImportOracle|Any CPU.Build.0 = Release|Any CPU
+		{EA322E3C-1307-4652-B482-8C6A2B24F435}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA322E3C-1307-4652-B482-8C6A2B24F435}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA322E3C-1307-4652-B482-8C6A2B24F435}.DebugBbsUnitTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA322E3C-1307-4652-B482-8C6A2B24F435}.DebugBbsUnitTests|Any CPU.Build.0 = Debug|Any CPU
+		{EA322E3C-1307-4652-B482-8C6A2B24F435}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA322E3C-1307-4652-B482-8C6A2B24F435}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA322E3C-1307-4652-B482-8C6A2B24F435}.ReleaseImportOracle|Any CPU.ActiveCfg = Release|Any CPU
+		{EA322E3C-1307-4652-B482-8C6A2B24F435}.ReleaseImportOracle|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 11
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://martinets:8080/tfs/agrideacollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Client\\Client.csproj
+		SccProjectName1 = Client
+		SccLocalPath1 = Client
+		SccProjectUniqueName2 = Common\\Common.csproj
+		SccProjectName2 = Common
+		SccLocalPath2 = Common
+		SccProjectUniqueName3 = Remote\\Remote.csproj
+		SccProjectName3 = Remote
+		SccLocalPath3 = Remote
+		SccProjectUniqueName4 = Web\\Web.csproj
+		SccProjectName4 = Web
+		SccLocalPath4 = Web
+		SccProjectUniqueName5 = RemoteV2\\Remote4Web.csproj
+		SccProjectName5 = RemoteV2
+		SccLocalPath5 = RemoteV2
+		SccProjectUniqueName6 = Agridea.Sedex\\Agridea.Sedex.csproj
+		SccProjectName6 = Agridea.Sedex
+		SccLocalPath6 = Agridea.Sedex
+		SccProjectUniqueName7 = Core\\Core.csproj
+		SccProjectName7 = Core
+		SccLocalPath7 = Core
+		SccProjectUniqueName8 = AgrideaCore\\AgrideaCore.csproj
+		SccProjectName8 = AgrideaCore
+		SccLocalPath8 = AgrideaCore
+		SccProjectUniqueName9 = Acorda2WebApiModel\\Acorda2WebApiModel.csproj
+		SccProjectName9 = Acorda2WebApiModel
+		SccLocalPath9 = Acorda2WebApiModel
+		SccProjectUniqueName10 = CommonUnitTests\\CommonUnitTests.csproj
+		SccProjectName10 = CommonUnitTests
+		SccLocalPath10 = CommonUnitTests
+	EndGlobalSection
+EndGlobal

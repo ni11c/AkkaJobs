@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AgrideaCore.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="AgrideaCoreTargetContainer"></EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Agridea.Security" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AgrideaCoreContainer" annotation:LazyLoadingEnabled="true" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+          <EntitySet Name="Permissions" EntityType="Agridea.Security.Permission" />
+          <EntitySet Name="Users" EntityType="Agridea.Security.User" />
+          <EntitySet Name="Roles" EntityType="Agridea.Security.Role" />
+          <EntitySet Name="UserRoles" EntityType="Agridea.Security.UserRole" />
+          <AssociationSet Name="UserUserRole" Association="Agridea.Security.UserUserRole">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserRole" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="UserRoleRole" Association="Agridea.Security.UserRoleRole">
+            <End Role="UserRole" EntitySet="UserRoles" />
+            <End Role="Role" EntitySet="Roles" />
+          </AssociationSet>
+          <AssociationSet Name="PermissionRole" Association="Agridea.Security.PermissionRole">
+            <End Role="Permission" EntitySet="Permissions" />
+            <End Role="Role" EntitySet="Roles" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Permission">
+          <Documentation>
+            <Summary>fac822a1-76b5-4767-b00a-ecd8b4d3a9a8</Summary>
+            <LongDescription>Reference</LongDescription>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+            <Documentation>
+              <Summary>ee761cc4-6888-47d0-85ca-ef19cffa8991</Summary>
+            </Documentation>
+          </Property>
+          <Property Type="String" Name="Description" Nullable="false">
+            <Documentation>
+              <Summary>54f4ab4e-33f4-4118-9070-b2a3249be1a2</Summary>
+            </Documentation>
+          </Property>
+          <Property Type="String" Name="ItemName" Nullable="false">
+            <Documentation>
+              <Summary>e1688d1a-8c71-40fc-b335-92e80733cef8</Summary>
+              <LongDescription>Discriminant</LongDescription>
+            </Documentation>
+          </Property>
+          <NavigationProperty Name="Role" Relationship="Agridea.Security.PermissionRole" FromRole="Permission" ToRole="Role">
+            <Documentation>
+              <Summary>ae34122f-f35a-48c3-b1c2-b7519c371d9c</Summary>
+              <LongDescription>Discriminant</LongDescription>
+            </Documentation>
+          </NavigationProperty>
+        </EntityType>
+        <EntityType Name="User">
+          <Documentation>
+            <Summary>f1534bae-9c18-40c3-bd19-c0975ea34767</Summary>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+            <Documentation>
+              <Summary>4258de42-3f93-4cca-b0d1-bf8a81e84992</Summary>
+            </Documentation>
+          </Property>
+          <Property Type="String" Name="UserName" Nullable="false">
+            <Documentation>
+              <Summary>9a74e02e-329b-4418-b24a-9b31ec7fe279</Summary>
+              <LongDescription>Discriminant</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Type="String" Name="Password" Nullable="false">
+            <Documentation>
+              <Summary>d998e77e-4fc1-4b6c-93f1-351eecd01fe2</Summary>
+            </Documentation>
+          </Property>
+          <Property Type="String" Name="Email" Nullable="false">
+            <Documentation>
+              <Summary>5e012c34-a094-4f79-8992-6840d84be5be</Summary>
+            </Documentation>
+          </Property>
+          <Property Type="DateTime" Name="LastActivityDate" Nullable="true">
+            <Documentation>
+              <Summary>8a3f4546-8520-4985-b7a0-1c8fe3413e2e</Summary>
+            </Documentation>
+          </Property>
+          <Property Type="DateTime" Name="LastLoginDate" Nullable="true">
+            <Documentation>
+              <Summary>14dfcc22-c229-41ce-a58b-c1f3893e748b</Summary>
+            </Documentation>
+          </Property>
+          <Property Type="DateTime" Name="LastPasswordChangeDate" Nullable="true">
+            <Documentation>
+              <Summary>dbc4479e-25e3-4776-892f-2494a2007769</Summary>
+            </Documentation>
+          </Property>
+          <Property Type="Boolean" Name="Blocked" Nullable="false">
+            <Documentation>
+              <Summary>24ada0c8-47d6-4172-bc55-fdedeb091712</Summary>
+            </Documentation>
+          </Property>
+          <Property Type="Boolean" Name="SuperUser" Nullable="false">
+            <Documentation>
+              <Summary>042e729f-2c9d-4c94-8ed9-edd86315cc95</Summary>
+            </Documentation>
+          </Property>
+          <NavigationProperty Name="UserRoleList" Relationship="Agridea.Security.UserUserRole" FromRole="User" ToRole="UserRole">
+            <Documentation>
+              <Summary>ecee210c-964c-4047-990c-84a41a97fbf2</Summary>
+            </Documentation>
+          </NavigationProperty>
+        </EntityType>
+        <EntityType Name="Role">
+          <Documentation>
+            <Summary>3031ac25-21a0-464d-b7e0-87ed36ed2074</Summary>
+            <LongDescription>Reference</LongDescription>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+            <Documentation>
+              <Summary>9fd1cfdc-37a0-491b-9ddd-4383201357f9</Summary>
+            </Documentation>
+          </Property>
+          <Property Type="String" Name="Name" Nullable="false">
+            <Documentation>
+              <Summary>12b6f78d-9eed-45df-a944-006dac050134</Summary>
+              <LongDescription>Discriminant</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Type="String" Name="Description" Nullable="false">
+            <Documentation>
+              <Summary>f578ac41-3d3c-4fb6-a955-ce50fd959fd7</Summary>
+            </Documentation>
+          </Property>
+          <NavigationProperty Name="UserRoleList" Relationship="Agridea.Security.UserRoleRole" FromRole="Role" ToRole="UserRole">
+            <Documentation>
+              <Summary>2a00b1fa-44b3-4206-bccf-8bf952f5f783</Summary>
+            </Documentation>
+          </NavigationProperty>
+          <NavigationProperty Name="PermissionList" Relationship="Agridea.Security.PermissionRole" FromRole="Role" ToRole="Permission">
+            <Documentation>
+              <Summary>f22a322e-b09d-44df-a349-d2e308c1b622</Summary>
+            </Documentation>
+          </NavigationProperty>
+          <Property Name="CanAccessAllFarms" Type="Boolean" Nullable="false">
+            <Documentation>
+              <Summary>9c6c5701-c029-4dd5-b7dc-9cd4c0370f23</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="IsWebApi" Type="Boolean" Nullable="false">
+            <Documentation>
+              <Summary>b9bf1aec-0960-4c5e-bf0c-4519ca1defa4</Summary>
+            </Documentation>
+          </Property>
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Documentation>
+            <Summary>70eed306-3d3d-40dc-a96e-65c7859a4b2e</Summary>
+            <LongDescription>a</LongDescription>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+            <Documentation>
+              <Summary>878099ce-3fe8-44c4-aa78-83389fef9a64</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="CommitmentDate" Type="DateTime" Nullable="true">
+            <Documentation>
+              <Summary>008753fc-ba9f-4677-ac27-632836688dc3</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="Comment" Type="String" Nullable="false">
+            <Documentation>
+              <Summary>3fe6d416-6e35-427c-9da7-e2f81d0d4423</Summary>
+            </Documentation>
+          </Property>
+          <NavigationProperty Name="User" Relationship="Agridea.Security.UserUserRole" FromRole="UserRole" ToRole="User">
+            <Documentation>
+              <Summary>3a1a1941-e91c-478b-baa8-bedcd77e3d6a</Summary>
+              <LongDescription>Discriminant</LongDescription>
+            </Documentation>
+          </NavigationProperty>
+          <NavigationProperty Name="Role" Relationship="Agridea.Security.UserRoleRole" FromRole="UserRole" ToRole="Role">
+            <Documentation>
+              <Summary>236b6137-f1c0-4e15-9f03-af5718671c4c</Summary>
+              <LongDescription>Discriminant</LongDescription>
+            </Documentation>
+          </NavigationProperty>
+          <Property Name="FarmGroup" Type="Agridea.Security.FarmGroup" Nullable="false">
+            <Documentation>
+              <Summary>ecc5fa8c-9003-4ba8-97f4-6c1b1e675781</Summary>
+            </Documentation>
+          </Property>
+        </EntityType>
+        <Association Name="UserUserRole">
+          <End Type="Agridea.Security.User" Role="User" Multiplicity="1" />
+          <End Type="Agridea.Security.UserRole" Role="UserRole" Multiplicity="*" />
+        </Association>
+        <Association Name="UserRoleRole">
+          <End Type="Agridea.Security.UserRole" Role="UserRole" Multiplicity="*" />
+          <End Type="Agridea.Security.Role" Role="Role" Multiplicity="1" />
+        </Association>
+        <Association Name="PermissionRole">
+          <End Type="Agridea.Security.Permission" Role="Permission" Multiplicity="*" />
+          <End Type="Agridea.Security.Role" Role="Role" Multiplicity="1" />
+        </Association>
+        <EnumType Name="FarmGroup">
+          <Member Name="All" Value="0" />
+          <Member Name="Yearly" Value="1" />
+          <Member Name="HobbyAll" Value="2" />
+          <Member Name="Summering" Value="3" />
+          <Member Name="YearlyHobby" Value="4" />
+          <Member Name="YearlySummering" Value="5" />
+          <Member Name="HobbyOnly" Value="6" />
+        </EnumType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <Alias Key="Model" Value="AgrideaCore" />
+        <Alias Key="Target" Value="AgrideaCore.Store" />
+        <EntityContainerMapping CdmEntityContainer="AgrideaCoreContainer" StorageEntityContainer="AgrideaCoreTargetContainer"></EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer>
+    <edmx:Connection>
+      <DesignerInfoPropertySet xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+        <DesignerProperty Name="ValidateOnBuild" Value="False" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram Name="AgrideaCore" ZoomLevel="109" xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+        <EntityTypeShape EntityType="Agridea.Security.Permission" Width="1.5" PointX="0.75" PointY="3" Height="2.1725878906249996" />
+        <EntityTypeShape EntityType="Agridea.Security.User" Width="2.125" PointX="5.875" PointY="0.5" Height="2.7494921874999996" />
+        <EntityTypeShape EntityType="Agridea.Security.Role" Width="1.5" PointX="3.125" PointY="4.375" Height="1.9802864583333326" />
+        <EntityTypeShape EntityType="Agridea.Security.UserRole" Width="1.5" PointX="3.25" PointY="1.25" />
+        <AssociationConnector Association="Agridea.Security.UserUserRole" />
+        <AssociationConnector Association="Agridea.Security.UserRoleRole" />
+        <AssociationConnector Association="Agridea.Security.PermissionRole" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

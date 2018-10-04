@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AgrideaCore.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="AgrideaCoreTargetContainer"></EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Agridea.Calendar" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AgrideaCoreContainer" annotation:LazyLoadingEnabled="true" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+          <EntitySet Name="CalendarEvents" EntityType="Agridea.Calendar.CalendarEvent" />
+          <EntitySet Name="CalendarEventRecurrences" EntityType="Agridea.Calendar.CalendarEventRecurrence" />
+          <AssociationSet Name="CalendarEventCalendarEventRecurrence" Association="Agridea.Calendar.CalendarEventCalendarEventRecurrence">
+            <End Role="CalendarEvent" EntitySet="CalendarEvents" />
+            <End Role="CalendarEventRecurrence" EntitySet="CalendarEventRecurrences" />
+          </AssociationSet>
+          <EntitySet Name="CalendarEventStatus" EntityType="Agridea.Calendar.CalendarEventStatus" />
+          <AssociationSet Name="CalendarEventCalendarEventStatus" Association="Agridea.Calendar.CalendarEventCalendarEventStatus">
+            <End Role="CalendarEvent" EntitySet="CalendarEvents" />
+            <End Role="CalendarEventStatus" EntitySet="CalendarEventStatus" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="CalendarEvent">
+          <Documentation>
+            <Summary>476b1ee2-94aa-454c-990a-f0a47a664e65</Summary>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="String" Name="Id" Nullable="false">
+            <Documentation>
+              <Summary>225420e5-6e39-402a-85cc-4833b923bb58</Summary>
+            </Documentation>
+          </Property>
+          <Property Type="String" Name="Description" Nullable="false">
+            <Documentation>
+              <Summary>f7a4aefb-fc2a-454f-b9b6-9e29e3b64943</Summary>
+            </Documentation>
+          </Property>
+          <Property Type="String" Name="Title" Nullable="false">
+            <Documentation>
+              <Summary>f2574de4-bd49-4520-8d26-0376b612d5a2</Summary>
+            </Documentation>
+          </Property>
+          <Property Type="String" Name="Comment" Nullable="false">
+            <Documentation>
+              <Summary>e3370f1e-eb31-434a-b0f0-4cde41895de0</Summary>
+            </Documentation>
+          </Property>
+          <Property Type="DateTime" Name="StartDate" Nullable="true">
+            <Documentation>
+              <Summary>b0b2bf9f-19f7-4aa0-9b76-86735e36d22a</Summary>
+            </Documentation>
+          </Property>
+          <Property Type="DateTime" Name="EndDate" Nullable="true">
+            <Documentation>
+              <Summary>9becb296-458b-437a-8cda-7cb1afb453f3</Summary>
+            </Documentation>
+          </Property>
+          <Property Type="String" Name="Owner" Nullable="false">
+            <Documentation>
+              <Summary>c67653a0-75fb-4035-ba40-0a8af88136e4</Summary>
+            </Documentation>
+          </Property>
+          <Property Type="String" Name="AppliesTo" Nullable="false">
+            <Documentation>
+              <Summary>7dd91293-3b6b-40b8-86ed-c43beb3bf2d0</Summary>
+            </Documentation>
+          </Property>
+          <NavigationProperty Name="Recurrence" Relationship="Agridea.Calendar.CalendarEventCalendarEventRecurrence" FromRole="CalendarEvent" ToRole="CalendarEventRecurrence">
+            <Documentation>
+              <Summary>4424a6e4-9e7b-4eb0-ae67-ff5655c83fbd</Summary>
+            </Documentation>
+          </NavigationProperty>
+          <NavigationProperty Name="Status" Relationship="Agridea.Calendar.CalendarEventCalendarEventStatus" FromRole="CalendarEvent" ToRole="CalendarEventStatus">
+            <Documentation>
+              <Summary>01a265a8-efb0-4095-9790-d042fe285fa4</Summary>
+            </Documentation>
+          </NavigationProperty>
+          <Property Type="String" Name="FileName" Nullable="false">
+            <Documentation>
+              <Summary>d316fc2e-4de4-482f-91fc-c224310882ef</Summary>
+            </Documentation>
+          </Property>
+          <Property Type="Binary" Name="FileData" Nullable="false">
+            <Documentation>
+              <Summary>dfb29f01-74aa-436d-a51a-9e7fd0bb1d36</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="FileType" Type="String" Nullable="false">
+            <Documentation>
+              <Summary>d4c2b107-a62d-4335-9dbf-aeddda69f571</Summary>
+            </Documentation>
+          </Property>
+        </EntityType>
+        <EntityType Name="CalendarEventRecurrence">
+          <Documentation>
+            <Summary>4a2d41a8-ce43-49d4-8577-0812b4e7cc0f</Summary>
+            <LongDescription>Reference</LongDescription>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+            <Documentation>
+              <Summary>d9f30d09-7297-499f-8898-36e869b53598</Summary>
+            </Documentation>
+          </Property>
+          <Property Type="Int32" Name="Code" Nullable="false">
+            <Documentation>
+              <Summary>21df7957-9b6e-4c8c-810a-43ce9eb99dd0</Summary>
+              <LongDescription>Discriminant</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Type="String" Name="Description" Nullable="false">
+            <Documentation>
+              <Summary>876ecb5a-bb36-4ac5-b61f-1629ba436f63</Summary>
+            </Documentation>
+          </Property>
+        </EntityType>
+        <Association Name="CalendarEventCalendarEventRecurrence">
+          <End Type="Agridea.Calendar.CalendarEvent" Role="CalendarEvent" Multiplicity="*" />
+          <End Type="Agridea.Calendar.CalendarEventRecurrence" Role="CalendarEventRecurrence" Multiplicity="1" />
+        </Association>
+        <EntityType Name="CalendarEventStatus">
+          <Documentation>
+            <Summary>251be393-8a31-42bb-9ed4-a58db1cae6db</Summary>
+            <LongDescription>Reference</LongDescription>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+            <Documentation>
+              <Summary>cb11ddfa-c742-4ea1-88d8-2acf14dcbbf5</Summary>
+            </Documentation>
+          </Property>
+          <Property Type="Int32" Name="Code" Nullable="false">
+            <Documentation>
+              <Summary>94b684ff-3e4b-449f-af82-24c6c052adfe</Summary>
+              <LongDescription>Discriminant</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Type="String" Name="Description" Nullable="false">
+            <Documentation>
+              <Summary>b0d1316d-4a9e-4f85-a7c6-a993b84fba0c</Summary>
+            </Documentation>
+          </Property>
+        </EntityType>
+        <Association Name="CalendarEventCalendarEventStatus">
+          <End Type="Agridea.Calendar.CalendarEvent" Role="CalendarEvent" Multiplicity="*" />
+          <End Type="Agridea.Calendar.CalendarEventStatus" Role="CalendarEventStatus" Multiplicity="1" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <Alias Key="Model" Value="AgrideaCore" />
+        <Alias Key="Target" Value="AgrideaCore.Store" />
+        <EntityContainerMapping CdmEntityContainer="AgrideaCoreContainer" StorageEntityContainer="AgrideaCoreTargetContainer"></EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer>
+    <edmx:Connection>
+      <DesignerInfoPropertySet xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+        <DesignerProperty Name="ValidateOnBuild" Value="False" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram Name="AgrideaCore" ZoomLevel="97" xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+        <EntityTypeShape EntityType="Agridea.Calendar.CalendarEvent" Width="2.25" PointX="0.625" PointY="0.5" Height="3.1340950520833331" />
+        <EntityTypeShape EntityType="Agridea.Calendar.CalendarEventRecurrence" Width="2.375" PointX="3.625" PointY="0.875" Height="1.59568359375" />
+        <AssociationConnector Association="Agridea.Calendar.CalendarEventCalendarEventRecurrence">
+          <ConnectorPoint PointX="2.875" PointY="1.6728417968750002" />
+          <ConnectorPoint PointX="3.625" PointY="1.6728417968750002" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="Agridea.Calendar.CalendarEventStatus" Width="2.375" PointX="3.625" PointY="3.25" Height="1.5956835937499996" />
+        <AssociationConnector Association="Agridea.Calendar.CalendarEventCalendarEventStatus">
+          <ConnectorPoint PointX="1.75" PointY="3.6340950520833331" />
+          <ConnectorPoint PointX="1.75" PointY="4.2398898229166662" />
+          <ConnectorPoint PointX="3.625" PointY="4.2398898229166662" />
+        </AssociationConnector>
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

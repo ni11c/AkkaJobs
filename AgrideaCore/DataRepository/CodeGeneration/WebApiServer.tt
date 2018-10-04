@@ -1,0 +1,130 @@
+﻿ <#
+/////////////////////////////////////////////////////////////////////////////////
+//                                                                             //
+// Copyright (c) 2010-2011 Agridea, Inc. All Rights Reserved                   //
+//                                                                             //
+/////////////////////////////////////////////////////////////////////////////////
+#>
+<#@ include file="WebApiServerTools.tt"#>
+<#@ assembly name="$(ProjectDir)$(OutDir)AgrideaCore.dll" #>
+<#@ import namespace="Agridea.DataRepository" #>
+
+<#+
+string GenerateCode(string inputFile)
+{   
+    CodeGenerationParameters.Code = new CodeGenerationTools(this);
+    CodeGenerationParameters.Region = new CodeRegion(this, 1);
+    CodeGenerationParameters.EF = new MetadataTools(this);
+    EntityFrameworkTemplateFileManager fileManager = EntityFrameworkTemplateFileManager.Create(this);
+    string nameSpace = string.Format("{0}", Parameters.NameSpace);
+
+    bool converged = true;
+    IList<EntityType> allButIgnored                              = Parameters.Current.AllButIgnored();
+    IList<EntityType> orderedEntities                            = Parameters.Order.GetPartialDependencyOrder(allButIgnored, out converged);
+
+    WriteHeader(fileManager, Parameters.ExtraUsings.ToArray());
+
+    fileManager.StartNewFile("ApiServerMapping.cs");
+    BeginNamespace(nameSpace, CodeGenerationParameters.Code);
+#>
+public static class ApiServerMapping
+{
+    public static void Configure()
+    {
+<#+
+        foreach (EntityType entity in Parameters.Current.AllButIgnored().OrderBy(x => x.Name))
+        {
+            string entityFullName = Parameters.ModelNameSpace + "." + entity.Name;
+            string viewModelFullName = Parameters.WebApiModelNameSpace+ "." + entity.Name;
+#>
+        EasyMapper.EnsureMapper<<#=entityFullName#>, <#=viewModelFullName#>>(false);
+        EasyMapper.EnsureMapper<<#=entityFullName#>, <#=viewModelFullName+"Reference"#>>(false);
+<#+
+
+        }
+#>
+
+        EasyMapper.AssertConfigurationIsValid();
+    }
+}
+<#+
+    EndNamespace(nameSpace);
+
+
+    foreach (EntityType entity in Parameters.Current.AllButIgnored())
+    {
+        string controllerRoute = entity.Name.ToLower() + "s";
+        string className = entity.Name + "sController";
+        fileManager.StartNewFile(className + ".cs");
+        BeginNamespace(nameSpace, CodeGenerationParameters.Code);
+#>
+[MustHavePermission]
+[LoggingAttribute]
+[RoutePrefix("api/<#=controllerRoute#>")]
+<#=Accessibility.ForType(entity)#> <#=CodeGenerationParameters.Code.SpaceAfter(CodeGenerationParameters.Code.AbstractOption(entity))#>partial class <#=className#> : ControllerBase
+{
+<#+
+    GenerateApiController(CodeGenerationParameters.Region, CodeGenerationParameters.Code, entity);
+#>
+}
+<#+
+    EndNamespace(nameSpace);
+}	
+    fileManager.Process();
+    return "generation done";
+}
+#>
+
+<#+
+private void GenerateApiController(CodeRegion region, CodeGenerationTools code, EntityType entity)
+{
+    string className = entity.Name + "sController";
+    string entityFullName = Parameters.ModelNameSpace + "." + entity.Name;
+    string viewModelFullName = Parameters.WebApiModelNameSpace+ "." + entity.Name;
+
+    region.Begin("Initialization");
+#>
+    public <#=className#>() 
+        : base()
+    {}
+<#+
+    region.End();
+
+    region.Begin("Actions");
+#>
+    [EnableQuery]
+    public IQueryable<<#=viewModelFullName#>> GetAll()
+    {
+        return ApiServerHelper.GetAll<<#=entityFullName#>, <#=viewModelFullName#>>(this, service_);
+    }
+    public <#=viewModelFullName#> GetById(int id)
+    {
+        return ApiServerHelper.GetById<<#=entityFullName#>, <#=viewModelFullName#>>(this, service_, id);
+    }
+    public <#=viewModelFullName#> Post(<#=viewModelFullName#> item)
+    {
+        return ApiServerHelper.Post<<#=entityFullName#>, <#=viewModelFullName#>>(this, service_, item);
+    }
+
+	public void PostAll(IList<<#=viewModelFullName#>> list) 
+	{
+		ApiServerHelper.PostAll<<#=entityFullName#>, <#=viewModelFullName#>>(this, service_, list);
+	}
+
+    public void Put(int id, <#=viewModelFullName#> item)
+    {
+        ApiServerHelper.Put<<#=entityFullName#>, <#=viewModelFullName#>>(this, service_, id, item);
+    }
+    public void Delete(int id)
+    {
+        ApiServerHelper.Delete<<#=entityFullName#>, <#=viewModelFullName#>>(this, service_, id);
+    }
+<#+
+    region.End();
+}
+
+private string GetPrivateInstanceName(CodeGenerationTools code, EdmMember property)
+{
+    return code.CamelCase(code.Escape(property)) + CodeGenerationConstants.Underscore;
+}
+#>

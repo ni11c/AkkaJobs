@@ -1,0 +1,21 @@
+﻿<#@ template hostSpecific="true" debug="true"#>
+<#@ include file="../../../DataRepository/CodeGeneration/DomainModel.tt" #>
+
+<#
+    //System.Diagnostics.Debugger.Launch(); 
+    string inputFile = "NewsDomainModel.edmx";
+	
+ 	var textTransform = DynamicTextTransformation.Create(this);
+	var code = new CodeGenerationTools(this);
+	var ef = new MetadataTools(this);
+	var typeMapper = new TypeMapper(code, ef, textTransform.Errors);
+	var loader = new EdmMetadataLoader(textTransform.Host, textTransform.Errors);
+	
+	Parameters.Reset();
+	Parameters.Current.Add(loader.CreateEdmItemCollection(inputFile));
+	
+	Parameters.ServiceInterface = "IAgrideaService";
+	Parameters.NameSpace = "Agridea";
+	
+    GenerateCodeFor(inputFile);
+#>

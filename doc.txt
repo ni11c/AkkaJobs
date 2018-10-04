@@ -1,0 +1,15 @@
+Check out those references
+http://getakka.net/docs/deployment-scenarios/Windows%20Service
+http://doc.akka.io/docs/akka/snapshot/scala/remoting.html
+https://github.com/petabridge/akkadotnet-code-samples/tree/master/Cluster.WebCrawler
+
+PRODUCT BACKLOG:
++ Get results from job. Jobs can have side effects (like write data somewhere) but must return a result (a url where a file can be downloaded, 
+an acknowledgement string, a serializable object, ...).
++ Log job activity, and make the lob log accessible to consumers (success or failure). Stay independant from the consumers logging system.
+Ideally pass in a logger via the job factory.
++ Use IActorRef instead of ActorSelection for Supervisor. Maintain connection status to remote system in web server, enable web clients to manage
+thie connection
++ Show number of signalr clients connected to the web server.
++ Implement sipa job than gets data from the web api.
++ Draw a schema explaining the architecture of the project. (try smartdraw).

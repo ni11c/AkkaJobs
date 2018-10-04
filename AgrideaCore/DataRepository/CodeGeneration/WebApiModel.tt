@@ -1,0 +1,52 @@
+﻿<#
+/////////////////////////////////////////////////////////////////////////////////
+//                                                                             //
+// Copyright (c) 2010-2011 Agridea, Inc. All Rights Reserved                   //
+//                                                                             //
+/////////////////////////////////////////////////////////////////////////////////
+#>
+<#@ include file="Tools.tt"#>
+<#@ assembly name="$(ProjectDir)$(OutDir)AgrideaCore.dll" #>
+<#@ import namespace="Agridea.DataRepository" #>
+
+<#+
+string GenerateCurrentHelper()
+{   
+    CodeGenerationParameters.Code = new CodeGenerationTools(this);
+    CodeGenerationParameters.Region = new CodeRegion(this, 1);
+    CodeGenerationParameters.EF = new MetadataTools(this);
+    EntityFrameworkTemplateFileManager fileManager = EntityFrameworkTemplateFileManager.Create(this);
+    string nameSpace = string.Format("{0}", Parameters.NameSpace);
+
+    bool converged = true;
+    IList<EntityType> allButIgnored                              = Parameters.Current.AllButIgnored();
+    IList<EntityType> orderedEntities                            = Parameters.Order.GetPartialDependencyOrder(allButIgnored, out converged);
+
+    WriteHeader(fileManager, Parameters.ExtraUsings.ToArray());
+    fileManager.StartNewFile("CurrentHelper.cs");
+    BeginNamespace(nameSpace, CodeGenerationParameters.Code);
+#>
+public class CurrentHelper
+{
+    public static Type[] GetDependencyOrder()
+    {
+	    return new Type[]
+		{
+<#+
+    foreach(var entity in orderedEntities)
+	{
+#>
+            <#=string.Format("typeof({0}),", entity.Name)#>
+<#+
+	}
+#>
+        };
+	}
+}
+<#+
+	
+    EndNamespace(nameSpace);
+    fileManager.Process();
+	return "generation done";
+}
+#>

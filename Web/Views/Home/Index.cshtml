@@ -1,0 +1,184 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Akka.net Demo</h1>
+    <p class="lead">Un prototype utilisant Akka.net, asp.net mvc et signalR pour simuler la gestion de tâches longues depuis un client mvc.</p>
+</div>
+
+<input type="button" class="btn btn-default" id="register" value="Connect"/>
+<input type="button" class="btn btn-default" id="showall" value="Show jobs" />
+<input type="button" class="btn btn-default" id="addJob" value="Start new job"/>
+<input type="button" class="btn btn-default" id="purge" value="Remove finished jobs" />
+<h3>Jobs</h3>
+<div id="progress"></div>
+<h3>Log</h3>
+<div class="well" id="output"></div>
+<input type="hidden" id="clientId"/>
+
+@section scripts
+{
+    <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script>
+        $(function() {
+            var theHub = $.connection.theHub;
+            var newJobsPending = false;
+            $('#clientId').val(guid());
+            var BUTTON_PAUSE = '<button type="button" class="btn btn-default"><span role="button" class="glyphicon glyphicon-pause pause"></span>&nbsp;</button>';
+            var BUTTON_STOP = '<button type="button" class="btn btn-default"><span role="button" class="glyphicon glyphicon-stop stop"></span>&nbsp;</button>';
+            var BUTTON_RESULT = '<button type="button" class="btn btn-default"><span role="button" class="glyphicon glyphicon-save result"></span>&nbsp;</button>';
+
+            function log(message) {
+                var well = $('#output');
+                var numMessages = well.find('p').length;
+                if (numMessages > 10) {
+                    well.find('p:last-child').remove();
+                }
+                well.prepend('<p>' + message + '</p>');
+            }
+
+            function displayJobs(jobs) {
+                // jobs looks like this
+                //jobs = [
+                //    { Name: 'Job0001', Percent: 42, Status: 'Running' },
+                //    { Name: 'Job0002', Percent: 12, Status: 'Paused' },
+                //];
+
+                var progress = $('#progress');
+                progress.empty();
+                for (var i = 0; i < jobs.length; i++) {
+                    var markup =
+                        '<div class="row">' +
+                            '<div class="col-sm-2">' + buildTitleAndCommandButtons(jobs[i].Name, jobs[i].Status === "Completed") + '</div>' +
+                            '<div class="col-sm-9"><div class="progress">' + buildProgressBar(jobs[i].Percent) + '</div></div>' +
+                            '<div class="col-sm-1 status">' + jobs[i].Status + '</div>' +
+                            '</div>';
+                    progress.append(markup);
+                }
+            }
+
+            // This does not work, progress bar does not show properly. Use V2 instead.
+            function updateJob(job) {
+                var selectorString = "#progress .row:contains(" + job.Name + ")";
+                var row = $(selectorString);
+                var progressBar = row.find('.progress-bar');
+                progressBar.attr('aria-valuenow', job.Percent);
+                progressBar.css('width', job.Percent);
+                progressBar.text(job.Percent + '%');
+            }
+
+            // Redraw the whole bar
+            function updateJobV2(job) {
+                var selectorString = "#progress .row:contains(" + job.Name + ")";
+                var row = $(selectorString);
+                var progress = row.find('.progress');
+                var progressBar = buildProgressBar(job.Percent);
+                progress.html(progressBar);
+            }
+
+            function updateJobStatus(job) {
+                var selectorString = "#progress .row:contains(" + job.Name + ")";
+                var row = $(selectorString);
+                if (row && row.length > 0) {
+                    row.find('.status').text(job.Status);
+                }
+            }
+
+            function buildProgressBar(percent) {
+                return '<div class="progress-bar" role="progressbar" aria-valuenow="' + percent + '" aria-valuemin="0" aria-valuemax="100" style="width: ' + percent + '%; min-width: 2em;">' + percent + '%</div>';
+            }
+
+            function buildTitleAndCommandButtons(title, doShowResultButton) {
+                var markup = '<div class="btn-group btn-group-xs inline" role="group">' + BUTTON_PAUSE +  BUTTON_STOP;
+                if (doShowResultButton) {
+                    markup += BUTTON_RESULT;
+                }
+                markup += '</div>&nbsp;<span class="inline job-name">' + title + '</span>';
+                return markup;
+            }
+
+            function appendGetResultButton(job) {
+                var selectorString = "#progress .row:contains(" + job.Name + ")";
+                var row = $(selectorString);
+                if (row && row.length > 0) {
+                    var buttonCancel = row.find('span.stop').closest('button');
+                    buttonCancel.after(BUTTON_RESULT);
+                }
+            }
+
+            function guid() {
+                function s4() {
+                    return Math.floor((1 + Math.random()) * 0x10000)
+                      .toString(16)
+                      .substring(1);
+                }
+                return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                  s4() + '-' + s4() + s4() + s4();
+            }
+
+            theHub.client.printMessage = function(message) {
+                log(message);
+            };
+
+            theHub.client.updateJob = function(job) {
+                if (newJobsPending) {
+                    theHub.server.getJobs();
+                    newJobsPending = false;
+                }
+                updateJobV2(job);
+            };
+
+            theHub.client.updateJobStatus = function(job) {
+                updateJobStatus(job);
+                if (job.Status === "Completed") {
+                    appendGetResultButton(job);
+                }
+            }
+
+            theHub.client.displayJobs = function(jobs) {
+                log('displaying jobs...');
+                displayJobs(jobs);
+            }
+
+            theHub.client.showResult = function(result) {
+                if (result.ClientId === $('#clientId').val()) {
+                    alert(result.JobResult);
+                }
+            }
+
+            $.connection.hub.start().done(function() {
+                $('#addJob').click(function() {
+                    theHub.server.startJob();
+                    newJobsPending = true;
+                });
+                $('#register').click(function() {
+                    theHub.server.register();
+                });
+                $('#showall').click(function() {
+                    theHub.server.getJobs();
+                });
+                $('#purge').click(function() {
+                    theHub.server.purge();
+                });
+            });
+
+            $('#progress').on('click', '.stop', function () {
+                var name = $(this).closest('.row').find('.job-name').text();
+                theHub.server.cancel(name);
+            }).on('click', '.pause', function () {
+                var name = $(this).closest('.row').find('.job-name').text();
+                theHub.server.pause(name);
+                $(this).removeClass("pause").removeClass("glyphicon-pause").addClass("glyphicon-play").addClass("resume");
+            }).on('click', '.resume', function () {
+                var name = $(this).closest('.row').find('.job-name').text();
+                theHub.server.resume(name);
+                $(this).removeClass("resume").removeClass("glyphicon-play").addClass("glyphicon-pause").addClass("pause");
+            }).on('click', '.result', function() {
+                var name = $(this).closest('.row').find('.job-name').text();
+                theHub.server.getResult(name, $('#clientId').val());
+            });
+        });
+    </script>
+}

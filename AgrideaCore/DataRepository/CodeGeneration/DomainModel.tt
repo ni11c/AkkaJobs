@@ -1,0 +1,1608 @@
+﻿<#
+/////////////////////////////////////////////////////////////////////////////////
+//                                                                             //
+// Copyright (c) 2010-2012 Agridea, Inc. All Rights Reserved                   //
+//                                                                             //
+/////////////////////////////////////////////////////////////////////////////////
+// TODO            
+// - cascade : dont generate context statements from edmx but have 
+//   CascadeRemoveRange generated or not based on edmx
+//Note: for reflexive many to many relations, le context statement is not gener.
+//if IsLexicographicallyOrdered change to accept A-A, it is twice....
+#>
+
+<#@ include file="Tools.tt"#>
+<#@ assembly name="$(ProjectDir)$(OutDir)AgrideaCore.dll" #>
+<#@ import namespace="Agridea.DataRepository" #>
+<#@ import namespace="Agridea.Metadata" #>
+
+<#+
+string GenerateCodeFor(string domainModelFile)
+{
+CodeRegion region = new CodeRegion(this, 1);
+var textTransform = DynamicTextTransformation.Create(this);
+var code = new CodeGenerationTools(this);
+var ef = new MetadataTools(this);
+var typeMapper = new TypeMapper(code, ef, textTransform.Errors);
+var loader = new EdmMetadataLoader(textTransform.Host, textTransform.Errors);
+
+bool valid = Validate(code, ef, Parameters.Current.AllButIgnored());
+if(!valid) return "Generation stopped";
+
+EntityFrameworkTemplateFileManager fileManager = EntityFrameworkTemplateFileManager.Create(this);
+
+// Write out support code to primary template output file
+string namespaceName = loader.GetModelNamespace(domainModelFile);
+WriteHeader(fileManager);
+BeginNamespace(namespaceName, code);
+EndNamespace(namespaceName);
+
+///////////
+// Data Dictionary
+///////////
+fileManager.StartNewFile("DomainModelMetadata.cs");
+GenerateMetadata(region, code, ef, namespaceName, Parameters.Current.AllIncludingIgnoredButInterAssembly());
+
+///////////
+// Context
+///////////
+string contextName = domainModelFile.Replace(".edmx", "Context");
+fileManager.StartNewFile(contextName + ".cs");
+BeginNamespace(namespaceName, code);
+#>
+public static class <#=contextName #> 
+{
+<#+region.Begin("Services");#>
+    public static void Configure(SqlServerContextBase context, DbModelBuilder modelBuilder)
+    {
+<#+
+foreach (EntityType entity in Parameters.Current.AllButIgnored())
+{
+    region.Begin(code.Escape(entity));
+    if((CodeGenerationHelper.Ignore(entity) || CodeGenerationHelper.GetInheritanceType(entity)==InheritanceTypes.TablePerHierarchy) && CodeGenerationHelper.ToSingleProperties(entity).Count() == 0)
+    {
+#>
+        //None(entity ignored or inheritance TPH or no x=>{0..1,1} navigation property)
+<#+
+    }
+
+    if(!CodeGenerationHelper.Ignore(entity)  && CodeGenerationHelper.GetInheritanceType(entity)!=InheritanceTypes.TablePerHierarchy) 
+    {
+#>
+        modelBuilder.Entity<<#=code.Escape(entity)#>>()
+            .ToTable(CodeGenerationHelper.GetTableName<<#=code.Escape(entity)#>>());
+<#+
+        if(CodeGenerationHelper.GetInheritanceType(entity)!=InheritanceTypes.TablePerType) 
+        {
+#>
+        modelBuilder.Entity<<#=code.Escape(entity)#>>()
+            .HasKey(x => x.Id);
+<#+
+        }
+    }
+    foreach(NavigationProperty property in CodeGenerationHelper.ToSingleProperties(entity))
+    { 
+        string optionalOrRequired = CodeGenerationHelper.IsMandatory(property) ? "Required" : "Optional";
+#>
+        modelBuilder.Entity<<#=code.Escape(entity)#>>()
+            .Has<#=optionalOrRequired#>(x => x.<#=code.Escape(property)#>)<#+
+        NavigationProperty inverse = CodeGenerationHelper.Inverse(property);
+        if(inverse != null)
+        {
+            if(CodeGenerationHelper.IsFromMany(property))
+            {
+#> 
+            .WithMany(x => x.<#=code.Escape(inverse)#>)<#+
+            }
+            if(CodeGenerationHelper.GetAssociationType(property) == AssociationTypes.OneToOne && 
+                !CodeGenerationHelper.IsPrincipal(property))
+            {
+#> 
+            .WithRequiredPrincipal(x => x.<#=code.Escape(inverse)#>)<#+
+            }
+            if(CodeGenerationHelper.GetAssociationType(property) == AssociationTypes.OneToOne && 
+                CodeGenerationHelper.IsPrincipal(property))
+            {
+#> 
+            .WithRequiredDependent(x => x.<#=code.Escape(inverse)#>)<#+
+            }
+            if(CodeGenerationHelper.GetAssociationType(property) == AssociationTypes.ZeroOrOneToZeroOrOne && 
+                !CodeGenerationHelper.IsPrincipal(property))
+            {
+#> 
+            .WithOptionalPrincipal(x => x.<#=code.Escape(inverse)#>)/*P*/<#+
+            }
+            if(CodeGenerationHelper.GetAssociationType(property) == AssociationTypes.ZeroOrOneToZeroOrOne &&  
+                CodeGenerationHelper.IsPrincipal(property))
+            {
+#> 
+            .WithOptionalDependent(x => x.<#=code.Escape(inverse)#>)/*D*/<#+
+            }
+            if(CodeGenerationHelper.GetAssociationType(property) == AssociationTypes.OneToZeroOrOne)
+            {
+#> 
+            .WithRequired(x => x.<#=code.Escape(inverse)#>)<#+
+            }
+            if(CodeGenerationHelper.GetAssociationType(property) == AssociationTypes.ZeroOrOneToOne)
+            {
+#> 
+            .WithOptional(x => x.<#=code.Escape(inverse)#>)<#+
+            }
+            if(ef.IsCascadeDeletePrincipal(property))
+            {
+#> 
+            .WillCascadeOnDelete()<#+
+            }
+        }
+        if(inverse == null)
+        {
+            if(CodeGenerationHelper.IsFromMany(property))
+            {
+#> 
+            .WithMany()<#+
+            }
+            if(CodeGenerationHelper.GetAssociationType(property) == AssociationTypes.OneToZeroOrOne)
+            {
+#> 
+            .WithRequired()<#+
+            }
+            if(CodeGenerationHelper.GetAssociationType(property) == AssociationTypes.OneToOne && 
+               !CodeGenerationHelper.IsPrincipal(property))
+            {
+#> 
+            .WithRequiredPrincipal()<#+
+            }
+            if(CodeGenerationHelper.GetAssociationType(property) == AssociationTypes.OneToOne && 
+               CodeGenerationHelper.IsPrincipal(property))
+            {
+#> 
+            .WithRequiredDependent()<#+
+            }
+            if(CodeGenerationHelper.GetAssociationType(property) == AssociationTypes.ZeroOrOneToOne)
+            {
+#> 
+            .WithOptional()<#+
+            }
+            if(CodeGenerationHelper.GetAssociationType(property) == AssociationTypes.ZeroOrOneToZeroOrOne && 
+               !CodeGenerationHelper.IsPrincipal(property))
+            {
+#> 
+            .WithOptionalPrincipal()<#+
+            }
+            if(CodeGenerationHelper.GetAssociationType(property) == AssociationTypes.ZeroOrOneToZeroOrOne && 
+               CodeGenerationHelper.IsPrincipal(property))
+            {
+#> 
+            .WithOptionalDependent()<#+
+            }
+            if(WillCascade(ef, property))
+            {
+#> 
+            .WillCascadeOnDelete()<#+
+            }
+        }
+#>;
+<#+
+    }
+    foreach(NavigationProperty property in CodeGenerationHelper.FromSingleToManyProperties(entity))
+    {
+#>
+        modelBuilder.Entity<<#=code.Escape(entity)#>>()
+            .HasMany(x => x.<#=code.Escape(property)#>)
+<#+
+        NavigationProperty inverse = ef.Inverse(property);
+        if(inverse != null)
+        {
+            if(CodeGenerationHelper.GetAssociationType(property) == AssociationTypes.OneToMany)
+            {
+#>
+            .WithRequired(x => x.<#=code.Escape(inverse)#>)<#+
+            }
+            if(CodeGenerationHelper.GetAssociationType(property) == AssociationTypes.ZeroOrOneToMany)
+            {
+#>
+            .WithOptional(x => x.<#=code.Escape(inverse)#>)<#+
+            }
+            if(WillCascade(ef, property))
+            {
+#> 
+            .WillCascadeOnDelete()<#+
+            }
+        }
+        if(inverse == null)
+        {
+            if(CodeGenerationHelper.GetAssociationType(property) == AssociationTypes.OneToMany)
+            {
+#>
+            .WithRequired()<#+
+            }
+            if(CodeGenerationHelper.GetAssociationType(property) == AssociationTypes.ZeroOrOneToMany)
+            {
+#>
+            .WithOptional()<#+
+            }
+            if(WillCascade(ef, property))
+            {
+#> 
+            .WillCascadeOnDelete()<#+
+            }
+        }
+#>;
+<#+ }region.End();
+    foreach(NavigationProperty property in CodeGenerationHelper.ManyToManyProperties(entity))
+    {
+        string withManyParams = ef.Inverse(property)==null ? "" : string.Format("x => x.{0}", code.Escape(ef.Inverse(property)));     
+		string tableName = string.Format("{0}-{1}-{2}", code.Escape(entity), code.Escape(property.ToEndMember.GetEntityType()), property.RelationshipType.Name);
+        string regionName = tableName;
+        #> 
+<#+
+        region.Begin(regionName);
+        #>
+        modelBuilder.Entity<<#=code.Escape(entity)#>>()
+            .HasMany(x => x.<#=code.Escape(property)#>)
+            .WithMany(<#=withManyParams#>) 
+            .Map(m => m.ToTable("<#=property.RelationshipType.Name#>").MapLeftKey("<#=property.FromEndMember.Name#>_Id").MapRightKey("<#=property.ToEndMember.Name#>_Id"));<#+region.End();
+    }
+
+    #>
+      
+<#+
+	region.Begin("decimals");
+	foreach(EdmProperty property in CodeGenerationHelper.DecimalPropertiesWithScale(entity))
+	{
+		#>
+		modelBuilder.Entity<<#=code.Escape(entity)#>>()
+			.Property(x => x.<#=code.Escape(property)#>)
+			.HasPrecision(18, <#=CodeGenerationHelper.GetScale(property)#>);
+    <#+
+	}
+	region.End();
+
+}
+#>
+    }
+	public static void AddForeignKeyIndexes(IList<NonUniqueIndex> indexes, SqlServerContextBase context)
+	{
+<#+
+foreach (EntityType entity in Parameters.Current.AllButIgnored())
+{
+	region.Begin(code.Escape(entity));
+    if(CodeGenerationHelper.GetInheritanceType(entity)==InheritanceTypes.TablePerHierarchy || CodeGenerationHelper.FromManyToSingleProperties(entity).Count() == 0)
+    {
+#>        //None(inheritance TPH or no *..{1,0..1} association or no index)<#+
+    }
+	foreach(NavigationProperty navigationProperty in CodeGenerationHelper.FromManyToSingleProperties(entity))
+	{
+		if(CodeGenerationHelper.IsFromManyToSingle(navigationProperty))
+		{
+		    string commented = CodeGenerationHelper.IndexProperty(navigationProperty) ? "" : "//";
+#>        <#=commented#>indexes.Add(context.GetNonUniqueIndexFor<<#=entity.Name#>>("<#=navigationProperty.Name#>_Id"));
+<#+		}
+	}
+    region.End();
+    NewLine();
+}
+#>
+    }
+    public static void AddUniqueConstraints(IList<UniqueIndex> uniqueConstraints, SqlServerContextBase context)
+    {
+<#+
+foreach (EntityType entity in Parameters.Current.AllButIgnored())
+{
+    region.Begin(code.Escape(entity));
+    int dicriminatingPropertyCount = CodeGenerationHelper.DiscriminatingProperties(entity).ToList().Count +  CodeGenerationHelper.DiscriminatingNavigationProperties(entity).ToList().Count;
+    if(CodeGenerationHelper.GetInheritanceType(entity)==InheritanceTypes.TablePerHierarchy || dicriminatingPropertyCount == 0)
+    {
+#>        //None(inheritance TPH or no discriminant)<#+
+    }
+    else
+    {
+          string discriminatingPropertyList = GetDiscriminatingPropertyList(entity);
+          if(discriminatingPropertyList.Length > 0)
+          {
+#>        uniqueConstraints.Add(context.GetUniqueIndexFor<<#=entity.Name#>>(<#=discriminatingPropertyList#>));
+<#+
+          }
+          else
+          {
+#>        //None(fk = pk in association {1..1}*{0..1,1}*{0..1,1}. PK is a sufficient constraint<#+
+          }
+    }
+    region.End();
+    NewLine();
+}
+#>
+    }<#+region.End();#>}
+<#+
+EndNamespace(namespaceName);
+
+/////////////////////
+//Emit Enum Types
+/////////////////////
+foreach( EnumType enumType in Parameters.Current.AllEnumTypes()) 
+{
+	fileManager.StartNewFile(enumType.Name + ".cs");
+	BeginNamespace(namespaceName, code);
+#>
+public enum <#=enumType.Name#> 
+{
+<#+
+	foreach(var member in CodeGenerationHelper.GetEnumMembers(enumType)) {
+	#>
+	    <#=CodeGenerationHelper.GetEnumMemberName(member)#> = <#=CodeGenerationHelper.GetEnumMemberValue(member)#>,
+<#+
+	}
+#>
+}
+<#+
+	EndNamespace(namespaceName);
+}
+
+
+
+
+//////////////////////
+// Emit Entity Types
+//////////////////////
+bool converged = true;
+IList<EntityType> all   = Parameters.Current.All();
+IList<EntityType> orderedEntities = Parameters.Order.GetPartialDependencyOrder(all, out converged);
+
+foreach (EntityType entity in Parameters.Current.AllButIgnored())
+{
+    fileManager.StartNewFile(entity.Name + ".cs");
+    BeginNamespace(namespaceName, code);
+	if(CodeGenerationHelper.IsReference(entity))
+	{
+#>
+[Reference]
+<#+
+	}
+	if(CodeGenerationHelper.IsDimension(entity))
+	{
+#>
+[Dimension]
+<#+
+	}
+#>
+[Serializable]
+<#=Accessibility.ForType(entity)#> <#=code.SpaceAfter(code.AbstractOption(entity))#>partial class <#=code.Escape(entity)#><#=CodeGenerationHelper.GetBaseType(entity)#>, IEquatable<<#=code.Escape(entity)#>>
+{
+<#+
+    GeneratePrimitiveProperties(region, code, entity);
+    GenerateNavigationProperties(region, code, ef, entity);
+    GenerateInitialization(region, code, entity);
+    GenerateIdentity(region, code, ef,entity, orderedEntities);
+#>
+}
+<#+
+    EndNamespace(namespaceName);
+}
+
+//////////////////////
+// Emit Service
+//////////////////////
+string serviceInterfaceName = Parameters.ServiceInterface;
+fileManager.StartNewFile(serviceInterfaceName + ".cs");
+BeginNamespace(Parameters.NameSpace, code);
+Order order = new Order();
+#>
+public partial interface <#=serviceInterfaceName#>
+{
+    #region GetByDiscriminant
+<#+
+foreach (EntityType entity in Parameters.Current.AllIncludingIgnoredButInterAssembly()) 
+{
+    if (CodeGenerationHelper.HasDiscriminantIncludingInherited(entity) && !CodeGenerationHelper.IgnoreButInterAssembly(entity))
+    {
+#>
+    <#=entity.Name#> GetByDiscriminants(<#=entity.Name #> item);
+    <#=entity.Name#> GetByDiscriminants(<#=entity.Name #> item, IList<<#=entity.Name #>> existingItems);
+<#+
+    }
+}
+#>
+    #endregion
+
+    #region Insert/Update/Delete SQL commands
+<#+
+foreach (EntityType entity in Parameters.Current.AllButIgnored().Where(x => !x.Abstract)) 
+{
+#>
+    void SqlBulkCopy(IEnumerable<<#=entity.Name #>> items);
+	void SqlBulkCopyWithId(IEnumerable<<#=entity.Name #>> items);
+    void SqlInsert(IEnumerable<<#=entity.Name#>> items);
+    void SqlUpdate(IEnumerable<<#=entity.Name#>> items);
+<#+
+    foreach(var navigationProperty in CodeGenerationHelper.ManyToManyProperties(entity))
+    {
+        var propertyType = navigationProperty.ToEndMember.GetEntityType();
+		string typeSignature = navigationProperty.RelationshipType.Name;
+#>
+    void SqlDelete<#=typeSignature#>();
+    void SqlInsert<#=typeSignature#>(IList<Tuple<int,int>> idPairs);
+<#+
+    }
+}
+#>
+    #endregion
+    
+    #region CascadeRemove
+<#+
+foreach (EntityType entity in Parameters.Current.AllIncludingIgnoredButInterAssembly())
+{
+    var entitiesWithNonNavigableToOneLink = order.GetEntitiesWithNonNavigableToOneLinkWith(entity, Parameters.Current.AllIncludingIgnoredButInterAssembly());
+    if(CodeGenerationHelper.IgnoreButInterAssembly(entity) && entitiesWithNonNavigableToOneLink.Count == 0) 
+    {
+#>
+    //IGNORE <#=entity.Name#>
+<#+
+        continue;
+    }
+
+    if(CodeGenerationHelper.IgnoreButInterAssembly(entity) && entitiesWithNonNavigableToOneLink.Count > 0)
+    {
+#>
+    //void CascadeRemove(<#=entity.Name#> item); //OVERRIDE
+<#+
+    }
+    else
+    {
+#>
+    void CascadeRemove(<#=entity.Name#> item); 
+<#+
+    }
+    if(!CodeGenerationHelper.IgnoreButInterAssembly(entity))
+    {
+#>
+    void CascadeRemoveRange(IList<<#=entity.Name#>> items); 
+<#+
+    }
+}
+#>
+    #endregion
+}
+<#+
+EndNamespace(namespaceName);
+
+string serviceName = serviceInterfaceName.Substring(1);
+fileManager.StartNewFile(serviceName + ".cs");
+BeginNamespace(Parameters.NameSpace, code);
+#>
+public partial class <#=serviceName#>
+{
+    #region Services
+    #region GetByDiscriminants
+<#+
+foreach (EntityType entity in Parameters.Current.AllIncludingIgnoredButInterAssembly()) 
+{
+    if (CodeGenerationHelper.HasDiscriminantIncludingInherited(entity) && !CodeGenerationHelper.IgnoreButInterAssembly(entity)) 
+    {
+        var discriminantProperties= CodeGenerationHelper.BuildRecursiveDiscriminantProperties(entity);
+#>
+    public <#= entity.Name#> GetByDiscriminants(<#=entity.Name #> item) 
+    {
+        return Repository.All<<#=entity.Name #>>().FirstOrDefault(m =>
+<#+
+        
+        foreach (var discriminantProperty in discriminantProperties) 
+        {         
+            string suffix = discriminantProperty == discriminantProperties.Last() ? ");" : " &&";
+#>
+            m.<#=discriminantProperty#> == item.<#=discriminantProperty#><#=suffix#>
+<#+                
+        }
+#>
+    }
+    public <#=entity.Name#> GetByDiscriminants(<#=entity.Name #> item, IList<<#=entity.Name #>> existingItems)
+    {
+        return existingItems.FirstOrDefault(m =>
+<#+
+        foreach (var discriminantProperty in discriminantProperties) 
+        {         
+            string suffix = discriminantProperty == discriminantProperties.Last() ? ");" : " &&";
+#>
+            m.<#=discriminantProperty#> == item.<#=discriminantProperty#><#=suffix#>
+<#+                
+        }
+#>
+    }
+<#+   
+    }
+}
+#>
+    #endregion
+
+    #region Insert/Update/Delete Sql commands
+<#+
+foreach (EntityType entity in Parameters.Current.AllButIgnored().Where(x => !x.Abstract)) 
+{
+    bool needsDiscriminatorInBaseTable = CodeGenerationHelper.NeedsDiscriminatorInBaseTable(entity, Parameters.Current.AllButIgnored());
+    
+    GenerateSqlBulkCopy(entity, needsDiscriminatorInBaseTable);
+	GenerateSqlBulkCopyWithId(entity, needsDiscriminatorInBaseTable);
+    GenerateSqlInsertBody(entity, needsDiscriminatorInBaseTable);
+    GenerateSqlUpdateBody(entity, needsDiscriminatorInBaseTable);
+    foreach(var navigationProperty in CodeGenerationHelper.ManyToManyProperties(entity))
+    {
+        GenerateSqlDeleteBody(navigationProperty);
+        GenerateSqlInsertBody(navigationProperty);
+    }
+}
+#>
+    #endregion
+
+    #region CascadeRemove
+<#+
+
+foreach (EntityType entity in Parameters.Current.AllIncludingIgnoredButInterAssembly())
+{
+    var entitiesWithNonNavigableToOneLink = order.GetEntitiesWithNonNavigableToOneLinkWith(entity, Parameters.Current.AllIncludingIgnoredButInterAssembly());
+    if(CodeGenerationHelper.IgnoreButInterAssembly(entity) && entitiesWithNonNavigableToOneLink.Count == 0) 
+    {
+#>
+    //IGNORE <#=entity.Name#>
+<#+
+        continue;
+    }
+    
+    if(CodeGenerationHelper.IgnoreButInterAssembly(entity) && entitiesWithNonNavigableToOneLink.Count > 0)
+    {
+#>
+    public override void CascadeRemove(<#=entity.Name#> item) //OVERRIDE
+<#+
+    }
+    else
+    {
+#>
+    public virtual void CascadeRemove(<#=entity.Name#> item)
+<#+
+    }
+#>
+    {
+        Requires<InvalidKeyException>.GreaterThan(item.Id, 0);
+        Log.Verbose("CascadeRemove({0})", item.ToString());
+<#+
+
+
+#>
+		//1==>X
+<#+
+        foreach(NavigationProperty navigationProperty in entity.NavigationProperties.Where(x => x.FromEndMember.RelationshipMultiplicity == RelationshipMultiplicity.One && CodeGenerationHelper.Inverse(x) == null))
+        {
+           NavigationProperty inverse = CodeGenerationHelper.Inverse(navigationProperty);
+           if(navigationProperty.ToEndMember.RelationshipMultiplicity == RelationshipMultiplicity.Many)
+           {  
+#>
+        CascadeRemoveRange(item.<#=navigationProperty.Name#>); //1==>*
+<#+
+           }
+           else
+           {
+               if(navigationProperty.ToEndMember.RelationshipMultiplicity == RelationshipMultiplicity.ZeroOrOne)
+               {
+#>
+        if(item.<#=navigationProperty.Name#> != null) CascadeRemove(item.<#=navigationProperty.Name#>); //1==>0..1
+<#+
+               }
+               else
+               {
+#>
+        CascadeRemove(item.<#=navigationProperty.Name#>); //1==>1
+<#+
+               }
+           }
+        }
+
+#>
+        //1<==>X
+<#+
+        foreach(EntityType otherEntity in order.GetEntitiesWithNavigableToOneLinkWith(entity, Parameters.Current.All()))
+        {
+            foreach(NavigationProperty navigationProperty in otherEntity.NavigationProperties.Where(x => x.ToEndMember.GetEntityType().Equals(entity)))
+            {
+                NavigationProperty inverse = CodeGenerationHelper.Inverse(navigationProperty);
+                if(inverse != null)
+                {
+                    if(CodeGenerationHelper.GetAssociationType(navigationProperty) == AssociationTypes.OneToOne && !CodeGenerationHelper.IsPrincipal(navigationProperty)) 
+					{
+#>
+        //CascadeRemove(item.<#=inverse.Name#>); //not princicipal 1<==>1 
+<#+         
+		                 continue;
+					}
+                    if(inverse.ToEndMember.RelationshipMultiplicity == RelationshipMultiplicity.Many)
+                    {
+#>
+        CascadeRemoveRange(item.<#=inverse.Name#>); //1<==>N
+<#+         
+                    }
+                    else
+                    {
+                        if(navigationProperty.FromEndMember.RelationshipMultiplicity == RelationshipMultiplicity.ZeroOrOne)
+                        {
+#>
+        if(item.<#=inverse.Name#> != null) CascadeRemove(item.<#=inverse.Name#>); //1<==>0..1
+<#+         
+                        }
+                        else
+                        {
+#>
+            CascadeRemove(item.<#=inverse.Name#>); //principal 1<==>1
+<#+         
+                        }
+                    }
+                }
+                else
+                { 
+#>
+        CascadeRemoveRange(Repository.All<<#=otherEntity.Name#>>().Include(x => x.<#=navigationProperty.Name#>).Where(x => x.<#=navigationProperty.Name#>.Id == item.Id).ToList()); //1<==X
+<#+
+                }
+            }
+        }
+
+
+#>
+        base.CascadeRemove(item);
+    }
+<#+
+
+    if(!CodeGenerationHelper.IgnoreButInterAssembly(entity))
+    {
+#>
+    public virtual void CascadeRemoveRange(IList<<#=entity.Name#>> items)
+    {
+        foreach(var item in items.ToArray()) CascadeRemove(item);
+    }
+<#+
+    }
+    else
+    {
+#>
+    //IGNORE CascadeRemoveRange for <#=entity.Name#>
+<#+
+    }
+}
+#>
+    #endregion
+    #endregion
+<#+
+NewLine();
+
+#>
+}
+<#+
+EndNamespace(namespaceName);
+fileManager.Process();
+return "Generation Done";
+}
+#>
+<#+
+string GenerateMetadata(CodeRegion region, CodeGenerationTools code, MetadataTools ef, string namespaceName, IList<EntityType> entities)
+{
+    BeginNamespace(namespaceName, code);
+
+#>
+public class DomainModelMetadata
+{
+    public IList<MetadataEntity> MetadataEntityList;
+	private IDictionary<string, MetadataEntity> metadataEntityForGuid_;
+	private MetadataEntity metadataEntity_;
+	private MetadataEntity neededMetadataEntity_;
+	private MetadataEntity needingMetadataEntity_;
+	private MetadataField metadataField_;
+	private MetadataNavigationProperty metadataNavigationProperty_;
+
+	public DomainModelMetadata()
+    {
+        MetadataEntityList = new List<MetadataEntity>();
+		metadataEntityForGuid_ = new Dictionary<string, MetadataEntity>();
+
+	    //No warnings
+        if (metadataEntity_ == null) metadataEntity_ = null;
+        if (neededMetadataEntity_ == null) neededMetadataEntity_ = null;
+        if (needingMetadataEntity_ == null) needingMetadataEntity_ = null;
+        if (metadataField_ == null) metadataField_ = null;
+        if (metadataNavigationProperty_ == null) metadataNavigationProperty_ = null;
+
+		//Pass1 : find entities
+<#+
+    foreach (EntityType entity in entities)
+    {
+	    var isDimension = CodeGenerationHelper.IsDimension(entity).ToString().ToLower();
+#>
+        metadataEntity_ = new MetadataEntity
+		{
+		    Guid = "<#=CodeGenerationHelper.Comment(entity)#>",
+			Name = "<#=entity.Name#>", 
+			Dimension = <#=isDimension#>,
+		};
+		MetadataEntityList.Add(metadataEntity_);
+		metadataEntityForGuid_.Add(metadataEntity_.Guid, metadataEntity_);
+
+<#+
+		foreach(EdmProperty property in CodeGenerationHelper.PrimitiveProperties(entity))
+		{
+#>
+        metadataField_ = new MetadataField
+		{
+		    Guid = "<#=CodeGenerationHelper.Comment(property)#>",
+			Name = "<#=property.Name#>", 
+			Type = "<#=property.TypeUsage.EdmType.Name#>",
+		};
+		metadataEntity_.MetadataFieldList.Add(metadataField_);
+<#+
+		}
+		foreach(NavigationProperty property in CodeGenerationHelper.NavigationProperties(entity))
+		{
+			MultiplicityTypes fromMultiplicity = CodeGenerationHelper.IsFromZeroOrOne(property) ? 
+				MultiplicityTypes.ZeroOrOne : 
+				(CodeGenerationHelper.IsFromOne(property) ? MultiplicityTypes.OneExactly : MultiplicityTypes.ZeroOrMany);
+			MultiplicityTypes toMultiplicity = CodeGenerationHelper.IsToZeroOrOne(property) ? 
+				MultiplicityTypes.ZeroOrOne : 
+				(CodeGenerationHelper.IsToOne(property) ? MultiplicityTypes.OneExactly : MultiplicityTypes.ZeroOrMany);
+			string propertyType = property.ToEndMember.GetEntityType().Name;
+#>
+        metadataNavigationProperty_ = new MetadataNavigationProperty
+		{
+		    Guid = "<#=CodeGenerationHelper.Comment(property)#>",
+			Name = "<#=property.Name#>", 
+			Type = "<#=property.ToEndMember.GetEntityType().Name#>",
+			FromMultiplicity = MultiplicityTypes.<#=fromMultiplicity#>,
+			ToMultiplicity = MultiplicityTypes.<#=toMultiplicity#>,
+		};
+		metadataEntity_.MetadataNavigationPropertyList.Add(metadataNavigationProperty_);
+<#+
+		}
+	}
+#>
+
+    	//Pass2 : add entity usages
+<#+
+    foreach (EntityType entity in entities)
+    {
+	    var neededEntities = Parameters.Order.GetNeededEntities(entity, entities);
+	    var needingEntities = Parameters.Order.GetNeedingEntities(entity, entities);
+
+#>
+		metadataEntity_ = metadataEntityForGuid_["<#=CodeGenerationHelper.Comment(entity)#>"];  //<#=entity.Name#>
+		//Needed entities
+<#+
+		foreach(var neededEntitity in neededEntities)
+		{
+#>
+		    neededMetadataEntity_ = metadataEntityForGuid_["<#=CodeGenerationHelper.Comment(neededEntitity)#>"]; //<#=neededEntitity.Name#>
+			metadataEntity_.UsedEntityList.Add(neededMetadataEntity_);
+<#+
+		}
+#>
+		//Needing entities
+<#+
+		foreach(var needingEntitity in needingEntities)
+		{
+#>
+		    needingMetadataEntity_ = metadataEntityForGuid_["<#=CodeGenerationHelper.Comment(needingEntitity)#>"]; //<#=needingEntitity.Name#>
+			metadataEntity_.UsingEntityList.Add(needingMetadataEntity_);
+<#+
+        }
+    }
+#>
+    }
+}
+<#+
+    EndNamespace(namespaceName);
+	return "Metadata Generated";
+}
+void GenerateSqlBulkCopy(EntityType entity, bool needsDiscriminatorInBaseTable)
+{
+    string pkfkKeyName;
+    var listColumns= GetBulkColumnNames(entity, out pkfkKeyName, needsDiscriminatorInBaseTable);
+    string objectValue = string.Empty;
+    string destinationTableName = needsDiscriminatorInBaseTable ? CodeGenerationHelper.GetRootType(entity).Name : entity.Name;
+    var enumPropertyNames = CodeGenerationHelper.PrimitiveSettableProperties(entity).Where(m => m.IsEnumType).Select(x => x.Name);
+#>
+    public void SqlBulkCopy(IEnumerable<<#=entity.Name#>> items)
+    {
+        using (var bulkCopy = new SqlBulkCopy(ConnectionString, SqlBulkCopyOptions.KeepIdentity |
+                    SqlBulkCopyOptions.UseInternalTransaction |
+                    SqlBulkCopyOptions.KeepNulls))
+        {
+		    bulkCopy.BulkCopyTimeout = 0;
+            bulkCopy.BatchSize = items.Count();
+            bulkCopy.DestinationTableName = CodeGenerationHelper.GetTableName<<#=destinationTableName#>>();
+            var table = new System.Data.DataTable();
+			
+<#+
+        
+        foreach (var column in listColumns)
+        {
+				
+            if (column.EndsWith("_Id"))
+                objectValue += string.Format("item.{0} == null ? null : item.{0}.Id as int ?", column.Replace("_Id", "")); 
+            else if (column == "Id")
+                objectValue += string.Format("item.{0} == null ? null : item.{0}.Id as int ?", pkfkKeyName);
+            else if (column == CodeGenerationConstants.Discriminator)
+                objectValue += string.Format("\"{0}\"", entity.Name);
+            else if (enumPropertyNames.Any(x => x == column))
+				objectValue += "(int)item." + column;
+			else
+                objectValue += "item." + column;
+
+            if (column != listColumns.Last()) objectValue += ",";
+            if (column.Contains(CodeGenerationConstants.Guid))
+            {
+#>
+            table.Columns.Add("<#=column#>", typeof(Guid));
+<#+
+            }
+            else
+            {
+#>
+            table.Columns.Add("<#=column#>");
+<#+
+            }
+#>
+            bulkCopy.ColumnMappings.Add("<#=column#>", "<#=column#>");  
+<#+ 
+        }
+#>
+            foreach (var item in items) table.Rows.Add(new object[]{<#=objectValue#>});
+            bulkCopy.WriteToServer(table);
+        }
+    }
+	
+<#+
+}
+void GenerateSqlBulkCopyWithId(EntityType entity, bool needsDiscriminatorInBaseTable)
+{
+    //string pkfkKeyName;
+    var listColumns= GetBulkColumnNamesWithId(entity, needsDiscriminatorInBaseTable);
+    string objectValue = string.Empty;
+    string destinationTableName = needsDiscriminatorInBaseTable ? CodeGenerationHelper.GetRootType(entity).Name : entity.Name;
+    var enumPropertyNames = CodeGenerationHelper.PrimitiveSettableProperties(entity).Where(m => m.IsEnumType).Select(x => x.Name);    
+#>
+    public void SqlBulkCopyWithId(IEnumerable<<#=entity.Name#>> items)
+    {
+        using (var bulkCopy = new SqlBulkCopy(ConnectionString, SqlBulkCopyOptions.KeepIdentity |
+                    SqlBulkCopyOptions.UseInternalTransaction |
+                    SqlBulkCopyOptions.KeepNulls))
+        {
+		    bulkCopy.BulkCopyTimeout = 0;
+            bulkCopy.BatchSize = items.Count();
+            bulkCopy.DestinationTableName = CodeGenerationHelper.GetTableName<<#=destinationTableName#>>();
+            var table = new System.Data.DataTable();    
+<#+
+        
+        foreach (var column in listColumns)
+        {
+            if (column.EndsWith("_Id"))
+                objectValue += string.Format("item.{0} == null ? null : item.{0}.Id as int ?", column.Replace("_Id", "")); 
+            else if (column == CodeGenerationConstants.Discriminator)
+                objectValue += string.Format("\"{0}\"", entity.Name);
+			else if (enumPropertyNames.Any(x => x == column))
+				objectValue += "(int)item." + column;
+            else
+                objectValue += "item." + column;
+
+            if (column != listColumns.Last()) objectValue += ",";
+            if (column.Contains(CodeGenerationConstants.Guid))
+            {
+#>
+            table.Columns.Add("<#=column#>", typeof(Guid));
+<#+
+            }
+            else
+            {
+#>
+            table.Columns.Add("<#=column#>");
+<#+
+            }
+#>
+            bulkCopy.ColumnMappings.Add("<#=column#>", "<#=column#>");  
+<#+ 
+        }
+#>
+            foreach (var item in items) table.Rows.Add(new object[]{<#=objectValue#>});
+            bulkCopy.WriteToServer(table);
+        }
+    }
+<#+      
+}
+#warning GenerateSqlInsertBody and GenerateSqlUpdateBody are vulnerable to sql injection. Use SqlCommand instead of string substitution.
+void GenerateSqlInsertBody(EntityType entity, bool needsDiscriminatorInBaseTable)
+{ 
+    string destinationTableName = needsDiscriminatorInBaseTable ? CodeGenerationHelper.GetRootType(entity).Name : entity.Name;
+#>
+    public void SqlInsert(IEnumerable<<#=entity.Name#>> items) 
+    {
+        if(!items.Any()) return;
+
+        StringBuilder commandStringBuilder = new StringBuilder();
+        commandStringBuilder.AppendFormat("INSERT INTO [{0}].[{1}].[{2}]{3}", DataRepositoryHelper.DatabaseNameFor(ConnectionString), "dbo", CodeGenerationHelper.GetTableName<<#=destinationTableName#>>(), Environment.NewLine);
+        commandStringBuilder.AppendFormat("{0}{1}",<#=GetInsertColumnNames(entity, needsDiscriminatorInBaseTable)#>, Environment.NewLine);
+<#+
+    foreach(var navigationProperty in CodeGenerationHelper.NavigationProperties(entity, includeInherited:true))
+    {
+        var associationType = CodeGenerationHelper.GetAssociationType(navigationProperty);
+        bool privateKeyForeignKeySituation = (CodeGenerationHelper.IsFromSingleToOne(associationType) && CodeGenerationHelper.IsPrincipal(navigationProperty)) ||
+           CodeGenerationHelper.IsFromZeroOrOneToOne(associationType);
+        bool manyToSingleSituation = CodeGenerationHelper.IsFromManyToSingle(associationType);
+        if(privateKeyForeignKeySituation)
+        {
+#>
+        //Nav. property '<#=navigationProperty.Name#>' is <#=associationType#> => PKFK situation
+<#+ 
+        }
+        if(!manyToSingleSituation && !privateKeyForeignKeySituation)
+        {
+#>
+        //Nav. property '<#=navigationProperty.Name#>' is <#=associationType#> => IGNORE
+<#+ 
+        }
+    }
+#>
+        commandStringBuilder.AppendFormat("VALUES{0}", Environment.NewLine);
+        
+        int rowCount = 0;
+        var startTime = DateTime.Now;
+        string separator = null;
+        StringBuilder stringBuilder = new StringBuilder();
+        
+        foreach(var item in items)
+        {
+            if (rowCount % 1000 == 0)
+            {
+                stringBuilder.Append(commandStringBuilder);
+                separator = null;
+            }
+            if(separator != null) stringBuilder.AppendLine(separator);
+            stringBuilder.Append(string.Format(<#=GetInsertColumnValuesFormat(entity, needsDiscriminatorInBaseTable)#>, <#=GetInsertColumnValuesParams(entity, needsDiscriminatorInBaseTable)#>));
+            
+            rowCount++;
+            separator = ",";
+        }
+        
+        string command = stringBuilder.ToString();
+        try
+        {
+            Repository.ExecuteSqlCommand(command);
+            Log.Verbose("Inserted {0} '{1}' duration {2}", rowCount, "<#=entity.Name#>", DateTime.Now - startTime);
+        }
+        catch(Exception)
+        {
+            Log.Error(command);
+            throw;
+        }
+    }
+<#+
+}
+
+void GenerateSqlUpdateBody(EntityType entity, bool needsDiscriminatorInBaseTable)
+{
+    string destinationTableName = needsDiscriminatorInBaseTable ? CodeGenerationHelper.GetRootType(entity).Name : entity.Name;
+#>
+    public void SqlUpdate(IEnumerable<<#=entity.Name#>> items) 
+    {
+        if(!items.Any()) return;
+        
+        StringBuilder stringBuilder = new StringBuilder();
+        foreach(var item in items)
+        {
+            stringBuilder.AppendFormat("UPDATE sqltable{0}", Environment.NewLine);
+            stringBuilder.AppendLine(string.Format(<#=GetUpdateModificationFormat(entity, needsDiscriminatorInBaseTable)#>, <#=GetUpdateModificationParams(entity, needsDiscriminatorInBaseTable)#>));
+            stringBuilder.AppendFormat("FROM [{0}].[{1}].[{2}] AS sqltable {3}", DataRepositoryHelper.DatabaseNameFor(ConnectionString), "dbo", CodeGenerationHelper.GetTableName<<#=destinationTableName#>>(), Environment.NewLine);
+            stringBuilder.AppendFormat("WHERE sqltable.Id='{0}'{1}", item.Id, Environment.NewLine);
+        }
+
+        string command = stringBuilder.ToString();
+        try
+        {
+            Repository.ExecuteSqlCommand(command);
+        }
+        catch(Exception)
+        {
+            Log.Error(command);
+            throw;
+        }
+    }
+<#+   
+}
+
+void GenerateSqlDeleteBody(NavigationProperty navigationProperty)
+{
+	var entityType = navigationProperty.FromEndMember.GetEntityType();
+    var propertyType = navigationProperty.ToEndMember.GetEntityType();
+    string typeSignature = navigationProperty.RelationshipType.Name;
+#>
+    public void SqlDelete<#=typeSignature#>()
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.AppendFormat("DELETE [{0}].[{1}].[{2}]{3}", DataRepositoryHelper.DatabaseNameFor(ConnectionString), "dbo", "<#=typeSignature#>", Environment.NewLine);
+        
+        string command = stringBuilder.ToString();
+        try
+        {
+            Repository.ExecuteSqlCommand(command);
+        }
+        catch(Exception)
+        {
+            Log.Error(command);
+            throw;
+        }
+    }
+<#+
+}
+
+void GenerateSqlInsertBody(NavigationProperty navigationProperty)
+{
+	var entityType = navigationProperty.FromEndMember.GetEntityType();
+    var propertyType = navigationProperty.ToEndMember.GetEntityType();
+	string fromEnd = navigationProperty.FromEndMember.Name;
+	string toEnd = navigationProperty.ToEndMember.Name;
+    string typeSignature = navigationProperty.RelationshipType.Name;
+#>
+    public void SqlInsert<#=typeSignature#>(IList<Tuple<int,int>> idPairs)
+    {
+        if(!idPairs.Any()) return;
+
+        StringBuilder commandStringBuilder = new StringBuilder();
+        commandStringBuilder.AppendFormat("INSERT INTO [{0}].[{1}].[{2}]{3}", DataRepositoryHelper.DatabaseNameFor(ConnectionString), "dbo", "<#= typeSignature#>", Environment.NewLine);
+        commandStringBuilder.AppendFormat("({0}_Id,{1}_Id{2})", "<#=fromEnd#>", "<#=toEnd#>", Environment.NewLine);
+        commandStringBuilder.AppendFormat("VALUES{0}", Environment.NewLine);
+        
+        int rowCount = 0;
+        var startTime = DateTime.Now;
+        string separator = null;
+        StringBuilder stringBuilder = new StringBuilder();
+
+        foreach(var idPair in idPairs)
+        {
+            if (rowCount % 1000 == 0)
+            {
+                stringBuilder.Append(commandStringBuilder);
+                separator = null;
+            }
+            if (separator != null) stringBuilder.AppendLine(separator);
+            stringBuilder.Append(string.Format("({0},{1})", idPair.Item1, idPair.Item2));
+            
+            rowCount++;
+            separator = ",";
+        }
+        
+        string command = stringBuilder.ToString();
+        try
+        {
+            Repository.ExecuteSqlCommand(command);
+            Log.Verbose("Inserted {0} '{1}-{2}' duration {3}", rowCount, "<#=entityType.Name#>", "<#=propertyType.Name#>", DateTime.Now - startTime);
+        }
+        catch(Exception)
+        {
+            Log.Error(command);
+            throw;
+        }
+    }
+<#+
+}
+
+string GetInsertColumnNames(EntityType entity, bool needsDiscriminatorInBaseTable)
+{
+    string columnList = "\"(CreationDate, CreatedBy, ModificationDate, ModifiedBy";
+    
+    foreach(var primitiveProperty in CodeGenerationHelper.PrimitiveSettableProperties(entity, includeInherited:true))
+        columnList += string.Format(", {0}", primitiveProperty.Name);
+    foreach(var navigationProperty in CodeGenerationHelper.NavigationProperties(entity, includeInherited:true))
+    {
+        var associationType = CodeGenerationHelper.GetAssociationType(navigationProperty);
+        if(CodeGenerationHelper.IsFromManyToSingle(associationType))
+            columnList += string.Format(", {0}_Id", navigationProperty.Name);
+        if(CodeGenerationHelper.IsFromSingleToOne(associationType) && CodeGenerationHelper.IsPrincipal(navigationProperty) ||
+           CodeGenerationHelper.IsFromZeroOrOneToOne(associationType))
+            columnList += string.Format(", Id", navigationProperty.Name);
+    }
+    if(needsDiscriminatorInBaseTable) columnList += string.Format(", {0}", CodeGenerationConstants.Discriminator);
+    
+    columnList += ")\"";
+    return columnList;  
+}
+
+IList<string> GetBulkColumnNames(EntityType entity, out string pkfkName, bool needsDiscriminatorInBaseTable)
+{
+        pkfkName = string.Empty;
+        var result= new List<string>();
+        result.AddRange(new string[]{"CreationDate", "CreatedBy", "ModificationDate", "ModifiedBy"});
+        foreach (var primitiveProperty in CodeGenerationHelper.PrimitiveSettableProperties(entity, includeInherited:true))
+            result.Add(primitiveProperty.Name);
+        foreach (var navigationProperty in CodeGenerationHelper.NavigationProperties(entity, includeInherited:true))
+        {
+            var associationType= CodeGenerationHelper.GetAssociationType(navigationProperty);
+            if (CodeGenerationHelper.IsFromManyToSingle(associationType))
+                result.Add(navigationProperty.Name + "_Id");
+            if (CodeGenerationHelper.IsFromSingleToOne(associationType) && CodeGenerationHelper.IsPrincipal(navigationProperty) ||
+            CodeGenerationHelper.IsFromZeroOrOneToOne(associationType)) {
+                result.Add("Id");
+                pkfkName = navigationProperty.Name;
+            }
+        }
+        if(needsDiscriminatorInBaseTable) result.Add(CodeGenerationConstants.Discriminator);
+
+        return result;
+}
+
+IList<string> GetBulkColumnNamesWithId(EntityType entity,  bool needsDiscriminatorInBaseTable)
+{
+        var result= new List<string>();
+        result.AddRange(new string[]{"Id", "CreationDate", "CreatedBy", "ModificationDate", "ModifiedBy"});
+        foreach (var primitiveProperty in CodeGenerationHelper.PrimitiveSettableProperties(entity, includeInherited:true))
+            result.Add(primitiveProperty.Name);
+        foreach (var navigationProperty in CodeGenerationHelper.NavigationProperties(entity, includeInherited:true))
+        {
+            var associationType= CodeGenerationHelper.GetAssociationType(navigationProperty);
+            if (CodeGenerationHelper.IsFromManyToSingle(associationType))
+                result.Add(navigationProperty.Name + "_Id");
+        }
+        if(needsDiscriminatorInBaseTable) result.Add(CodeGenerationConstants.Discriminator);
+
+        return result;
+}
+
+string GetInsertColumnValuesFormat(EntityType entity, bool needsDiscriminatorInBaseTable)
+{
+    string valuesFormat = "\"({0}, {1}, {2}, {3}";
+    
+    int placeHolderIndex = 4;
+    foreach(var primitiveProperty in CodeGenerationHelper.PrimitiveSettableProperties(entity, includeInherited:true))
+        valuesFormat += string.Format(", {{{0}}}", placeHolderIndex++);
+    foreach(var navigationProperty in CodeGenerationHelper.NavigationProperties(entity, includeInherited:true))
+    {
+        var associationType = CodeGenerationHelper.GetAssociationType(navigationProperty);
+        if(CodeGenerationHelper.IsFromManyToSingle(associationType))
+            valuesFormat += string.Format(", {{{0}}}", placeHolderIndex++);
+        if(CodeGenerationHelper.IsFromSingleToOne(associationType) && CodeGenerationHelper.IsPrincipal(navigationProperty) ||
+           CodeGenerationHelper.IsFromZeroOrOneToOne(associationType))
+            valuesFormat += string.Format(", {{{0}}}", placeHolderIndex++);
+    }
+    if(needsDiscriminatorInBaseTable) valuesFormat += string.Format(", {{{0}}}", placeHolderIndex++);
+    
+    valuesFormat += ")\"";
+    
+    return valuesFormat;
+}
+
+string GetInsertColumnValuesParams(EntityType entity, bool needsDiscriminatorInBaseTable)
+{
+    string valuesParams = "SqlEncode(item.CreationDate), SqlEncode(item.CreatedBy), SqlEncode(item.ModificationDate), SqlEncode(item.ModifiedBy)";
+    
+    foreach(var primitiveProperty in CodeGenerationHelper.PrimitiveSettableProperties(entity, includeInherited:true)) {
+	    if (primitiveProperty.IsEnumType) 
+			valuesParams +=string.Format(", (int)item.{0}", primitiveProperty.Name);
+		else 
+			valuesParams += string.Format(", SqlEncode(item.{0})", primitiveProperty.Name);
+	}
+    foreach(var navigationProperty in CodeGenerationHelper.NavigationProperties(entity, includeInherited:true))
+    {
+        var associationType = CodeGenerationHelper.GetAssociationType(navigationProperty);
+        if(CodeGenerationHelper.IsFromManyToSingle(associationType))
+            valuesParams += string.Format(", SqlEncodeId(item.{0})", navigationProperty.Name);
+        if(CodeGenerationHelper.IsFromSingleToOne(associationType) && CodeGenerationHelper.IsPrincipal(navigationProperty) ||
+           CodeGenerationHelper.IsFromZeroOrOneToOne(associationType))
+            valuesParams += string.Format(", SqlEncode(item.{0}.Id)", navigationProperty.Name);
+    }
+    if(needsDiscriminatorInBaseTable) valuesParams += string.Format(", SqlEncode(\"{0}\")", entity.Name);
+
+    return valuesParams;
+}
+
+string GetUpdateModificationFormat(EntityType entity, bool needsDiscriminatorInBaseTable)
+{
+    string modificationFormat = "\"SET CreationDate={0}, CreatedBy={1}, ModificationDate={2}, ModifiedBy={3}";
+    int placeHolderIndex = 4;
+    foreach(var primitiveProperty in CodeGenerationHelper.PrimitiveSettableProperties(entity, includeInherited:true))
+        modificationFormat += string.Format(", {0}={{{1}}}", primitiveProperty.Name, placeHolderIndex++);
+    foreach(var navigationProperty in CodeGenerationHelper.NavigationProperties(entity, includeInherited:true))
+    {
+        var associationType = CodeGenerationHelper.GetAssociationType(navigationProperty);
+        if(CodeGenerationHelper.IsFromManyToSingle(associationType))
+            modificationFormat += string.Format(", {0}_Id={{{1}}}", navigationProperty.Name, placeHolderIndex++);
+        if(CodeGenerationHelper.IsFromSingleToOne(associationType) && CodeGenerationHelper.IsPrincipal(navigationProperty) ||
+           CodeGenerationHelper.IsFromZeroOrOneToOne(associationType))
+            modificationFormat += string.Format(", Id={{{0}}}", placeHolderIndex++);
+    }
+    modificationFormat += "\"";
+    return modificationFormat;
+}
+
+string GetUpdateModificationParams(EntityType entity, bool needsDiscriminatorInBaseTable)
+{
+    string modificationParams = "SqlEncode(item.CreationDate), SqlEncode(item.CreatedBy), SqlEncode(DateTime.Now), SqlEncode(UserName)";
+    foreach(var primitiveProperty in CodeGenerationHelper.PrimitiveSettableProperties(entity, includeInherited:true))
+		if (primitiveProperty.IsEnumType) 
+			modificationParams += string.Format(", (int)item.{0}", primitiveProperty.Name);
+		else
+			modificationParams += string.Format(", SqlEncode(item.{0})", primitiveProperty.Name);
+    foreach(var navigationProperty in CodeGenerationHelper.NavigationProperties(entity, includeInherited:true))
+    {
+        var associationType = CodeGenerationHelper.GetAssociationType(navigationProperty);
+        if(CodeGenerationHelper.IsFromManyToSingle(associationType))
+            modificationParams += string.Format(", SqlEncodeId(item.{0})", navigationProperty.Name);
+        if(CodeGenerationHelper.IsFromSingleToOne(associationType) && CodeGenerationHelper.IsPrincipal(navigationProperty) ||
+           CodeGenerationHelper.IsFromZeroOrOneToOne(associationType))
+            modificationParams += string.Format(", SqlEncode(item.{0}.Id)", navigationProperty.Name);
+    }
+    return modificationParams;
+}
+
+
+string GetDiscriminatingPropertyList(EntityType entity)
+{
+    var strings = new List<string>();
+    foreach(var discriminatingProperty in CodeGenerationHelper.DiscriminatingProperties(entity))
+        strings.Add(string.Format("\"{0}\"", discriminatingProperty.Name));
+
+    foreach(var discriminatingNavigationProperty in CodeGenerationHelper.DiscriminatingNavigationProperties(entity))
+    {
+        if(CodeGenerationHelper.IsFromSingleToSingle(CodeGenerationHelper.GetAssociationType(discriminatingNavigationProperty))) continue; //no key in table
+        strings.Add(string.Format("\"{0}_Id\"", discriminatingNavigationProperty.Name));
+    }
+        
+    return string.Join(", ", strings);
+}
+
+
+private bool Validate(CodeGenerationTools code, MetadataTools ef, IList<EntityType> entities)
+{
+    bool valid = true;
+    foreach(var entity in entities)
+    {
+        if(CodeGenerationHelper.HasDiscriminant(entity)) 
+           valid &= ValidateDiscriminants(code, ef, entity);
+        else
+           Warning(string.Format("{0} has no discriminant", code.Escape(entity)));
+        
+        valid &= ValidateDiscriminants(code, ef, entity);
+        valid &= ValidatePrincipals(code, ef, entity);
+        valid &= ValidateInheritance(code, ef, entity);
+    }
+    return valid;
+}
+
+private bool ValidateDiscriminants(CodeGenerationTools code, MetadataTools ef, EntityType entity)
+{
+    bool valid = true;
+    
+    //Discriminants cant be nullable
+    foreach(EdmProperty property in CodeGenerationHelper.DiscriminatingProperties(entity))
+    {
+        if(ef.IsNullable(property))
+        {
+            Error(string.Format("{0} of {1} is a discriminant, hence cant be nullable", code.Escape(property), code.Escape(entity)));
+            valid = false;
+        }
+    }
+    foreach(var property in CodeGenerationHelper.DiscriminatingNavigationProperties(entity))
+    {
+        //Discriminants cant be optional
+        if(!CodeGenerationHelper.IsMandatory(property))
+        {
+            Error(string.Format("{0} of {1} is a discriminant, hence cant be optional", code.Escape(property), code.Escape(entity)));
+            valid = false;
+        }
+        //Pocos discriminants must have a discriminant 
+        if(!CodeGenerationHelper.Ignore(property.ToEndMember.GetEntityType()) && !CodeGenerationHelper.HasDiscriminant(property.ToEndMember.GetEntityType()))
+        {
+            Error(string.Format("{0} of {1} is a discriminant but {2} has no discriminant", code.Escape(property), code.Escape(entity), code.Escape(property.ToEndMember.GetEntityType())));
+            valid = false;
+        }
+    }
+
+    return valid;
+}
+private bool ValidatePrincipals(CodeGenerationTools code, MetadataTools ef, EntityType entity)
+{
+    bool valid = true;
+    
+    //All symetric association (i.e. 0..1-0..1 and 1-1) must have a principal 
+    foreach(var property in CodeGenerationHelper.NavigationProperties(entity))
+    {
+        if(!CodeGenerationHelper.IsSymetric(property)) continue;
+            
+        //One side exactly is the principal
+        NavigationProperty inverse = ef.Inverse(property);
+        if(!CodeGenerationHelper.IsPrincipal(property) && inverse != null && !CodeGenerationHelper.IsPrincipal(inverse))
+        {
+            Error(string.Format("{0} of {1} is an association end without principal", code.Escape(property), code.Escape(entity)));
+            valid = false;
+        }
+        if(CodeGenerationHelper.IsPrincipal(property) && inverse != null && CodeGenerationHelper.IsPrincipal(inverse))
+        {
+            Error(string.Format("{0} of {1} is an association end with 2 principals", code.Escape(property), code.Escape(entity)));
+            valid = false;
+        }
+    }
+
+    return valid;
+}
+private bool ValidateInheritance(CodeGenerationTools code, MetadataTools ef, EntityType entity)
+{
+    bool valid = true;
+    
+    var inheritanceType = CodeGenerationHelper.GetInheritanceType(entity);
+    EdmType rootType = CodeGenerationHelper.GetRootType(entity);
+    
+    if(inheritanceType == InheritanceTypes.TablePerType)
+    {
+        Warning(string.Format("{0} is a derived from {1} using TPT, you wont be able to optimize insert/update with sql or bulk.", entity.Name, rootType.Name));
+    }
+
+    return valid;
+}
+private bool ValidateInheritance(CodeGenerationTools code, MetadataTools ef, EntityType entity, IList<EntityType> entities)
+{
+    bool valid = true;
+    
+    EdmType rootType = CodeGenerationHelper.GetRootType(entity);
+    int inheritanceDepth = CodeGenerationHelper.GetInheritanceDepth(entity);
+    
+    if(CodeGenerationHelper.GetInheritanceType(entity) == InheritanceTypes.TablePerType)
+    {
+        Warning(string.Format("{0} is a derived from {1} using TPT, you wont be able to optimize insert/update with sql or bulk.", entity.Name, rootType.Name));
+    }
+    if(CodeGenerationHelper.GetInheritanceDepth(entity) > 1)
+    {
+        Warning(string.Format("{0} is a derived from {1} with inheritance depth {2} > 1, you wont be able to optimize insert/update with sql or bulk.", entity.Name, rootType.Name, inheritanceDepth));
+    }
+    
+    //Below is just for debugging, comment out for production code
+    //if(CodeGenerationHelper.NeedsDiscriminatorInBaseTable(entity, entities))
+    //{
+    //    Warning(string.Format("'{0}' needs to be treated with discriminant", entity.Name));
+    //}
+    //if(entity.Abstract)
+    //{
+    //    Warning(string.Format("'{0}' is abstract", entity.Name));
+    //}
+    //End
+
+    return valid;
+}
+private void GeneratePrimitiveProperties(CodeRegion region, CodeGenerationTools code, EntityType entity)
+{
+    region.Begin("Primitive Properties");
+    if(CodeGenerationHelper.PrimitiveProperties(entity).ToList().Count == 0)
+    #>    //None(no primitive properties)<#+
+    foreach (EdmProperty edmProperty in CodeGenerationHelper.PrimitiveProperties(entity))
+    {
+	    var setter = CodeGenerationHelper.IsComputed(edmProperty, entity) ? "private " : string.Empty;
+		if (CodeGenerationHelper.IsComputed(edmProperty, entity))
+		{
+#>
+	[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+<#+
+        }
+        if(CodeGenerationHelper.IsDiscriminant(edmProperty, entity))
+        {
+#>
+    [Discriminant]
+<#+
+            if(edmProperty.TypeUsage.EdmType.Name.ToLower() == "string")
+            {       
+#>
+    [MaxLength(<#=Agridea.DataRepository.CodeGenerationConstants.MaxDiscriminantStringLength#>)]
+<#+
+            }
+        }
+#>
+    <#=PropertyVirtualModifier(Accessibility.ForProperty(edmProperty))#> <#=code.Escape(edmProperty.TypeUsage)#> <#=code.Escape(edmProperty)#> { get; <#=setter#>set;}
+<#+
+    }
+    region.End();
+    NewLine();
+}
+
+string PropertyVirtualModifier(string accessibility)
+{
+    return accessibility + (accessibility != "private" ? " virtual" : "");
+}
+
+private void GenerateNavigationProperties(CodeRegion region, CodeGenerationTools code, MetadataTools ef, EntityType entity)
+{
+    region.Begin("Navigation Properties");
+    if(CodeGenerationHelper.NavigationProperties(entity).ToList().Count == 0)
+    #>    //None(no navigation property)<#+
+    foreach (NavigationProperty property in CodeGenerationHelper.NavigationProperties(entity))
+    {
+        if (CodeGenerationHelper.IsToMany(property))
+            GenerateManyNavigationProperty(region, code, ef, property);
+        else
+        {
+            if(CodeGenerationHelper.IsDiscriminant(property, entity))
+			{
+#>
+    [Discriminant]
+<#+
+            }
+	    	else if(CodeGenerationHelper.IsMandatory(property))
+		    {
+#>
+    [Mandatory]
+<#+
+		    }
+	    	
+            GenerateSingleNavigationProperty(region, code, ef, property);
+        }
+    }
+    region.End();
+    NewLine();
+}
+
+private void GenerateSingleNavigationProperty(CodeRegion region, CodeGenerationTools code, MetadataTools ef, NavigationProperty property)
+{
+    string entityType = code.Escape(property.FromEndMember.GetEntityType());
+    string propertyType = code.Escape(property.ToEndMember.GetEntityType());
+    NavigationProperty inverse = ef.Inverse(property);
+	var fromMultiplicity = property.FromEndMember.RelationshipMultiplicity.ToDisplayString();
+	var inverseNavigation = inverse != null ? "<" : "";
+	var toMultiplicity = property.ToEndMember.RelationshipMultiplicity.ToDisplayString();
+#>
+    public virtual <#=code.Escape(propertyType)#> <#=code.Escape(property)#>  { get; set; } //<#=entityType#> <#=fromMultiplicity#><#=inverseNavigation#>==><#=toMultiplicity#> <#=propertyType#>
+<#+
+
+}
+
+private void GenerateManyNavigationProperty(CodeRegion region, CodeGenerationTools code, MetadataTools ef, NavigationProperty property)
+{
+    string entityType = code.Escape(property.FromEndMember.GetEntityType());
+    string propertyType = code.Escape(property.ToEndMember.GetEntityType());
+    string privateInstanceName= GetPrivateInstanceName(code, property);
+    string collectionName= code.Escape(property);
+    NavigationProperty inverse = ef.Inverse(property);
+	var fromMultiplicity = property.FromEndMember.RelationshipMultiplicity.ToDisplayString();
+	var inverseNavigation = inverse != null ? "<" : "";
+	var toMultiplicity = property.ToEndMember.RelationshipMultiplicity.ToDisplayString();
+#>
+
+    private IList<<#=propertyType #>> <#=privateInstanceName #>;
+    public virtual IList<<#=propertyType #>> <#=collectionName #> //<#=entityType#> <#=fromMultiplicity#><#=inverseNavigation#>==><#=toMultiplicity#> <#=propertyType#>
+    {
+        get { return <#=privateInstanceName#> ?? (<#=privateInstanceName#> = new List<<#=propertyType#>>()); }
+        set { <#=privateInstanceName#> = value;}
+    }   
+<#+
+    
+}
+private string GetPrivateInstanceName(CodeGenerationTools code, EdmMember property)
+{
+    return code.CamelCase(code.Escape(property)) + CodeGenerationConstants.Underscore;
+}
+
+private void GenerateInitialization(CodeRegion region, CodeGenerationTools code, EntityType entity)
+{
+    region.Begin("Initialization");#>
+    public void CopyTo(<#=code.Escape(entity)#> other)
+    {
+<#+
+    foreach(EdmProperty property in CodeGenerationHelper.PrimitiveSettableProperties(entity))
+    {
+#>
+        other.<#=code.Escape(property)#> = <#=code.Escape(property)#>;
+<#+
+    }
+#>
+    }<#+
+    region.End();
+    NewLine();
+}
+
+private void GenerateIdentity(CodeRegion region, CodeGenerationTools code, MetadataTools ef, EntityType entity, IList<EntityType> orderedEntities)
+{
+    region.Begin("Identity");
+#>
+    public override string ToString()
+    {
+        return string.Format("[<#=ToStringFormat(code, entity)#>]",
+            base.ToString()<#=ToStringArgs(code, entity)#>);
+    }
+    public override int GetHashCode() { return base.GetHashCode(); }
+	public string NaturalKey()
+	{ 
+	    return 
+<#+
+    if (CodeGenerationHelper.HasDiscriminantIncludingInherited(entity) && !CodeGenerationHelper.IgnoreButInterAssembly(entity)) 
+    {
+        var discriminantProperties= CodeGenerationHelper.BuildRecursiveDiscriminantPropertiesForNaturalKey(entity);
+        foreach (var discriminantProperty in discriminantProperties) 
+        {         
+            string suffix = discriminantProperty == discriminantProperties.Last() ? ";" : " + ";
+#>
+            <#=discriminantProperty#><#=suffix#>
+<#+                
+        }
+	}
+	else
+	{
+#>
+            "No natural Key";
+<#+                
+	}
+#>    }
+    public override bool Equals(object other)
+    {
+        return Equals(other as <#=code.Escape(entity)#>);
+    }
+    public bool Equals(<#=code.Escape(entity)#> other)
+    {
+        if (object.ReferenceEquals(other, null)) return false;
+        if (object.ReferenceEquals(this, other)) return true;
+        if (!Id.Equals(other.Id)) return false;
+        if (!Id.Equals(0) && Id.Equals(other.Id)) return true;
+        return <#=DiscriminatingExpression(code, entity)#>;
+    } 
+<#+
+    region.End();
+    NewLine();
+}
+
+private string ToStringFormat(CodeGenerationTools code, EntityType entity)
+{
+    string format = "{0}";      
+    int paramIndex = 0;
+    foreach(var p in CodeGenerationHelper.PrimitiveProperties(entity))
+        format += string.Format(" {0}='{{{1}}}'", p.Name, ++paramIndex);
+    foreach(var p in CodeGenerationHelper.NavigationProperties(entity))
+    {
+        string qualifier = string.Empty;
+        if (CodeGenerationHelper.IsToMany(p))
+            qualifier = ".Count";
+        if(CodeGenerationHelper.IsToSingle(p) && CodeGenerationHelper.DiscriminatingProperties(p.ToEndMember.GetEntityType()).Count() > 0)
+            qualifier = "." + CodeGenerationHelper.DiscriminatingProperties(p.ToEndMember.GetEntityType()).ToList()[0].Name;
+        format += string.Format(" {0}{1}='{{{2}}}'", p.Name, qualifier,  ++paramIndex);
+    }
+    return format;
+}
+
+private string ToStringArgs(CodeGenerationTools code, EntityType entity)
+{
+    string args = string.Empty;
+    foreach(var p in CodeGenerationHelper.PrimitiveProperties(entity))
+        args += string.Format(",{0}            {1}", 
+            Environment.NewLine, 
+            p.Name);
+    foreach(var p in CodeGenerationHelper.NavigationProperties(entity))
+    {
+        if (CodeGenerationHelper.IsToMany(p))
+            args += string.Format(",{0}            {1}.Count", 
+                Environment.NewLine, 
+                p.Name);
+        if(CodeGenerationHelper.IsToSingle(p))
+        {
+            if(CodeGenerationHelper.DiscriminatingProperties(p.ToEndMember.GetEntityType()).Count() > 0)
+                args += string.Format(
+                    ",{0}            {1} == null ? \"@null\" : string.Format(\"{{0}}\", {1}.{2})", 
+                    Environment.NewLine, 
+                    p.Name, 
+                    CodeGenerationHelper.DiscriminatingProperties(p.ToEndMember.GetEntityType()).ToList()[0].Name);
+            else
+                args += string.Format(
+                    ",{0}            {1} == null ? \"@null\" : string.Format(\"{{0}}\", {2})", 
+                    Environment.NewLine, 
+                    p.Name,
+					"\"no primitive property discriminant\"");
+        }
+    }
+    return args;
+}
+
+private string DiscriminatingExpression(CodeGenerationTools code, EntityType entity)
+{
+    string expression = string.Empty;
+    int dicriminatingPropertyCount = CodeGenerationHelper.AllDiscriminatingProperties(entity).ToList().Count;
+    int dicriminatingPropertyIndex = 0;
+    foreach(var discriminatingProperty in CodeGenerationHelper.AllDiscriminatingProperties(entity))
+    {
+        string suffix = dicriminatingPropertyIndex++ < dicriminatingPropertyCount-1 ? string.Format(" &&{0}               ", Environment.NewLine) : string.Empty;
+        expression += string.Format("{0} == other.{0}{1}", discriminatingProperty.Name, suffix);
+    }
+    return expression == string.Empty ? "false" : expression;
+}
+
+#>
